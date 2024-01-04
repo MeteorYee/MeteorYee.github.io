@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Hugo ʕ•ᴥ•ʔ Bear Blog</title>
+    <title>Sylvan&#39;s Abracadabra</title>
     <link>https://meteoryee.github.io/</link>
-    <description>Recent content on Hugo ʕ•ᴥ•ʔ Bear Blog</description>
+    <description>Recent content on Sylvan&#39;s Abracadabra</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <copyright>Copyright © 2020, Jane Doe.</copyright>
-    <lastBuildDate>Fri, 03 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <copyright>Copyright © 2023, Sylvan.</copyright>
+    <lastBuildDate>Tue, 26 Dec 2023 23:19:01 +0800</lastBuildDate>
     <atom:link href="https://meteoryee.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Markdown Syntax Guide</title>
-      <link>https://meteoryee.github.io/markdown-syntax-guide/</link>
-      <pubDate>Fri, 03 Jan 2020 00:00:00 +0000</pubDate>
-      <guid>https://meteoryee.github.io/markdown-syntax-guide/</guid>
-      <description>&lt;p&gt;For a quick cheatsheet, check out &lt;a href=&#34;https://simplemde.com/markdown-guide&#34;&gt;https://simplemde.com/markdown-guide&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.&lt;/p&gt;</description>
+      <title>Why Did I Left</title>
+      <link>https://meteoryee.github.io/daily/why-did-i-left/</link>
+      <pubDate>Tue, 26 Dec 2023 23:19:01 +0800</pubDate>
+      <guid>https://meteoryee.github.io/daily/why-did-i-left/</guid>
+      <description></description>
     </item>
     <item>
       <title>Bear</title>
@@ -24,11 +24,11 @@
       <description>Bear Website: https://bearblog.dev&#xA;There is a website obesity crisis. Bloated websites are full of scripts, ads, and trackers slowing your readers down every time they try to read your well-crafted content.&#xA;Bear is all you need to build a fantastic and optimized site or blog. It works perfectly on any viewing device. All you need to focus on is writing good content.&#xA;Bear makes it simple to publish content online and grow an audience while keeping pages tiny, fast, and optimized for search engines.</description>
     </item>
     <item>
-      <title>Hugo</title>
-      <link>https://meteoryee.github.io/hugo/</link>
+      <title>Résumé</title>
+      <link>https://meteoryee.github.io/r%C3%A9sum%C3%A9/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://meteoryee.github.io/hugo/</guid>
-      <description>Hugo Website: https://gohugo.io&#xA;Written in Go, Hugo is an open-source static site generator available under the Apache Licence 2.0. Hugo supports TOML, YAML, and JSON data file types, Markdown and HTML content files, and uses shortcodes to add rich content. Other notable features are taxonomies, multilingual mode, image processing, custom output formats, HTML/CSS/JS minification, and support for Sass SCSS workflows.&#xA;Hugo makes use of a variety of open source projects including:</description>
+      <guid>https://meteoryee.github.io/r%C3%A9sum%C3%A9/</guid>
+      <description>Xingyu Yi Email: xingyuyi34 at gmail dot com Github: github.com/MeteorYee Address: Beijing, China Education University of Southern California, Los Angeles, U.S., 2017 - 2019&#xA;MA Computer Science Beijing Jiao Tong University, Beijing, China, 2013 - 2017&#xA;BA Computer Science and Technology Experience Alibaba 2023/10 - present&#xA;Software engineer of Alibaba&amp;rsquo;s search engine&#xA;C++ Search Engine Distributed System Huawei, 2012 Lab 2020/04 - 2023/09&#xA;Software engineer of the storage engine of a cloud-native distributed database system</description>
     </item>
   </channel>
 </rss>
