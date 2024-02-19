@@ -2,8 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://meteoryee.github.io/tech/inv-idx/</loc>
+    <lastmod>2024-02-19T23:34:36+08:00</lastmod>
+  </url><url>
+    <loc>https://meteoryee.github.io/tech/</loc>
+    <lastmod>2024-02-19T23:34:36+08:00</lastmod>
+  </url><url>
     <loc>https://meteoryee.github.io/</loc>
-    <lastmod>2024-01-22T22:49:00+08:00</lastmod>
+    <lastmod>2024-02-19T22:49:00+08:00</lastmod>
   </url><url>
     <loc>https://meteoryee.github.io/a-self-retro-how-does-my-personality-come-into-being/</loc>
     <lastmod>2024-01-22T22:49:00+08:00</lastmod>
@@ -17,7 +23,5 @@
     <loc>https://meteoryee.github.io/gallery/</loc>
   </url><url>
     <loc>https://meteoryee.github.io/r%C3%A9sum%C3%A9/</loc>
-  </url><url>
-    <loc>https://meteoryee.github.io/tech/</loc>
   </url>
 </urlset>
