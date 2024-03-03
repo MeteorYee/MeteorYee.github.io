@@ -7,14 +7,14 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>Copyright © 2023, Sylvan.</copyright>
-    <lastBuildDate>Mon, 19 Feb 2024 22:49:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 03 Mar 2024 13:00:00 +0800</lastBuildDate>
     <atom:link href="https://meteoryee.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Inverted Index Notes</title>
       <link>https://meteoryee.github.io/tech/inv-idx/</link>
       <pubDate>Mon, 19 Feb 2024 23:34:36 +0800</pubDate>
       <guid>https://meteoryee.github.io/tech/inv-idx/</guid>
-      <description>I&amp;rsquo;ve been working on inverted index these days. Hence, it&amp;rsquo;s a good time to do some summaries on it.&#xA;todo&amp;hellip;</description>
+      <description>Inverted Index Notes The Definition The File Organization Optimizations Cache Compression Smart Traversing Reference I&amp;rsquo;ve been working on inverted index these days. Hence, it&amp;rsquo;s a good time to do some summaries on it. I am going to split the notes into three parts: what is an inverted index, the possible file organization of it, and some of the optimizations to enhance its working efficiency.&#xA;The Definition As the name shows, it&amp;rsquo;s inverted, but what is the inversion meant to be?</description>
     </item>
     <item>
       <title>Résumé</title>
