@@ -19,7 +19,7 @@ The Definition As the name shows, it&rsquo;s inverted, but what is the inversion
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://meteoryee.github.io/tech/inv-idx/" /><meta property="og:image" content="https://meteoryee.github.io/images/share.png" /><meta property="article:section" content="tech" />
 <meta property="article:published_time" content="2024-02-19T23:34:36+08:00" />
-<meta property="article:modified_time" content="2024-03-03T13:04:04+08:00" /><meta property="og:site_name" content="Hugo ʕ•ᴥ•ʔ Bear" />
+<meta property="article:modified_time" content="2024-03-19T23:45:11+08:00" /><meta property="og:site_name" content="Hugo ʕ•ᴥ•ʔ Bear" />
 
 
 
@@ -34,7 +34,7 @@ The Definition As the name shows, it&rsquo;s inverted, but what is the inversion
 <meta itemprop="name" content="Inverted Index Notes">
 <meta itemprop="description" content="Inverted Index Notes The Definition The File Organization Optimizations Cache Compression Smart Traversing Reference I&rsquo;ve been working on inverted index these days. Hence, it&rsquo;s a good time to do some summaries on it. I am going to split the notes into three parts: what is an inverted index, the possible file organization of it, and some of the optimizations to enhance its working efficiency.
 The Definition As the name shows, it&rsquo;s inverted, but what is the inversion meant to be?"><meta itemprop="datePublished" content="2024-02-19T23:34:36+08:00" />
-<meta itemprop="dateModified" content="2024-03-03T13:04:04+08:00" />
+<meta itemprop="dateModified" content="2024-03-19T23:45:11+08:00" />
 <meta itemprop="wordCount" content="768"><meta itemprop="image" content="https://meteoryee.github.io/images/share.png" />
 <meta itemprop="keywords" content="" />
 <meta name="referrer" content="no-referrer-when-downgrade" />
@@ -273,8 +273,8 @@ The Definition As the name shows, it&rsquo;s inverted, but what is the inversion
 <p>The common pattern of an inverted index query is first finding the right positing list. Then it is encapsulated as an iterator object with the ability to spit out a DOCID every time it gets invoked. Finally, the query starts to traverse the iterator. It usually passes a DOCID <em>d_i</em> to the iterator and expects it will return a DOCID <em>d</em> that is equal to or greater than <em>d_i</em>. When the iterator says there is no more documents, generally by a special DOCID, the whole process is finished.</p>
 <p>If a posting list contains millions of documents, the whole searching process can be considerably slow. To encounter this inefficiency, some meta info are added to the file blocks of the posting list file, such as [2]. The paper introduces Block Max WAND (BMW) algorithm which stores the maximum score among all the documents in the current file block. The score can hint the query layer whether or not to decompress the block so that the decompression of lower scored blocks can be prevented and thus the query latency is improved.</p>
 <h2 id="reference">Reference</h2>
-<p>[1]. <em>Performance of Compressed Inverted List Caching in Search Engines.</em> Jiangong Zhang, Xiaohui Long, Torsten Suel. (2008)
-[2]. Faster Top-k Document Retrieval Using Block-Max Indexes. Shuai Ding, Torsten Suel (2011)</p>
+<p>[1]. <em>Performance of Compressed Inverted List Caching in Search Engines.</em> Jiangong Zhang, Xiaohui Long, Torsten Suel. (2008)</p>
+<p>[2]. Faster Top-k Document Retrieval Using Block-Max Indexes. Shuai Ding, Torsten Suel (2011)</p>
 
 </content>
 <p>
@@ -283,7 +283,7 @@ The Definition As the name shows, it&rsquo;s inverted, but what is the inversion
 
   </main>
   <br>
-  <i>-> Edited on 2024.03.03</i>
+  <i>-> Edited on 2024.03.19</i>
   <footer>
     Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
     <br>

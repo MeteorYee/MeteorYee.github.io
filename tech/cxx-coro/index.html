@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="https://meteoryee.github.io/images/favicon.png" />
+<title>C&#43;&#43; Coroutine Notes | Sylvan&#39;s Abracadabra</title>
+<meta name="title" content="C&#43;&#43; Coroutine Notes" />
+<meta name="description" content="C&#43;&#43; Coroutine Notes Stackful vs Stackless The Coroutine Handles/Objects Coroutine Handle Awaiter promise_type The Coroutine Operators co_await co_yield co_return The funtinality of coroutine in C&#43;&#43; is more of a semi-finished product. It doesn&rsquo;t provide the users a handy way to invoke a coroutine. For instance, in Golang, we can set off a goroutine readily by letting go of any functions. On the contrary, C&#43;&#43;&rsquo;s post-20 standards come with some &lsquo;gadgets&rsquo; which are the building blocks for the programmers to build a fully functioning architecture of coroutine." />
+<meta name="keywords" content="" />
+
+
+<meta property="og:title" content="C&#43;&#43; Coroutine Notes" />
+<meta property="og:description" content="C&#43;&#43; Coroutine Notes Stackful vs Stackless The Coroutine Handles/Objects Coroutine Handle Awaiter promise_type The Coroutine Operators co_await co_yield co_return The funtinality of coroutine in C&#43;&#43; is more of a semi-finished product. It doesn&rsquo;t provide the users a handy way to invoke a coroutine. For instance, in Golang, we can set off a goroutine readily by letting go of any functions. On the contrary, C&#43;&#43;&rsquo;s post-20 standards come with some &lsquo;gadgets&rsquo; which are the building blocks for the programmers to build a fully functioning architecture of coroutine." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://meteoryee.github.io/tech/cxx-coro/" /><meta property="og:image" content="https://meteoryee.github.io/images/share.png" /><meta property="article:section" content="tech" />
+<meta property="article:published_time" content="2024-03-19T23:01:52+08:00" />
+<meta property="article:modified_time" content="2024-03-19T23:45:11+08:00" /><meta property="og:site_name" content="Hugo ʕ•ᴥ•ʔ Bear" />
+
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://meteoryee.github.io/images/share.png" /><meta name="twitter:title" content="C&#43;&#43; Coroutine Notes"/>
+<meta name="twitter:description" content="C&#43;&#43; Coroutine Notes Stackful vs Stackless The Coroutine Handles/Objects Coroutine Handle Awaiter promise_type The Coroutine Operators co_await co_yield co_return The funtinality of coroutine in C&#43;&#43; is more of a semi-finished product. It doesn&rsquo;t provide the users a handy way to invoke a coroutine. For instance, in Golang, we can set off a goroutine readily by letting go of any functions. On the contrary, C&#43;&#43;&rsquo;s post-20 standards come with some &lsquo;gadgets&rsquo; which are the building blocks for the programmers to build a fully functioning architecture of coroutine."/>
+
+
+
+<meta itemprop="name" content="C&#43;&#43; Coroutine Notes">
+<meta itemprop="description" content="C&#43;&#43; Coroutine Notes Stackful vs Stackless The Coroutine Handles/Objects Coroutine Handle Awaiter promise_type The Coroutine Operators co_await co_yield co_return The funtinality of coroutine in C&#43;&#43; is more of a semi-finished product. It doesn&rsquo;t provide the users a handy way to invoke a coroutine. For instance, in Golang, we can set off a goroutine readily by letting go of any functions. On the contrary, C&#43;&#43;&rsquo;s post-20 standards come with some &lsquo;gadgets&rsquo; which are the building blocks for the programmers to build a fully functioning architecture of coroutine."><meta itemprop="datePublished" content="2024-03-19T23:01:52+08:00" />
+<meta itemprop="dateModified" content="2024-03-19T23:45:11+08:00" />
+<meta itemprop="wordCount" content="316"><meta itemprop="image" content="https://meteoryee.github.io/images/share.png" />
+<meta itemprop="keywords" content="" />
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  body {
+    font-family: Verdana, sans-serif;
+    margin: auto;
+    padding: 20px;
+    max-width: 720px;
+    text-align: left;
+    background-color: #fff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #444;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b {
+    color: #222;
+  }
+
+  a {
+    color: #3273dc;
+     
+  }
+
+  .title {
+    text-decoration: none;
+    border: 0;
+  }
+
+  .title span {
+    font-weight: 400;
+  }
+
+  nav a {
+    margin-right: 10px;
+  }
+
+  textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  input {
+    font-size: 16px;
+  }
+
+  content {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    padding: 2px 5px;
+    background-color: #f2f2f2;
+  }
+
+  pre code {
+    color: #222;
+    display: block;
+    padding: 20px;
+    white-space: pre-wrap;
+    font-size: 14px;
+    overflow-x: auto;
+  }
+
+  div.highlight pre {
+    background-color: initial;
+    color: initial;
+  }
+
+  div.highlight code {
+    background-color: unset;
+    color: unset;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: #222;
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px;
+    text-align: center;
+  }
+
+  .helptext {
+    color: #777;
+    font-size: small;
+  }
+
+  .errorlist {
+    color: #eba613;
+    font-size: small;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: #8b6fcb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #333;
+      color: #ddd;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    strong,
+    b {
+      color: #eee;
+    }
+
+    a {
+      color: #8cc2dd;
+    }
+
+    code {
+      background-color: #777;
+    }
+
+    pre code {
+      color: #ddd;
+    }
+
+    blockquote {
+      color: #ccc;
+    }
+
+    textarea,
+    input {
+      background-color: #252525;
+      color: #ddd;
+    }
+
+    .helptext {
+      color: #aaa;
+    }
+  }
+
+</style>
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>Sylvan&#39;s Abracadabra</h2>
+</a>
+<nav><a href="/">Home</a>
+
+<a href="/gallery/">Gallery</a>
+
+<a href="/r%C3%A9sum%C3%A9/">Résumé</a>
+
+<a href="/tech/">Tech</a>
+
+
+<a href="/blog">Blog</a>
+
+</nav></header>
+  <main>
+
+<content>
+  <h1 id="c-coroutine-notes">C++ Coroutine Notes</h1>
+<div class="custom-toc">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#stackful-vs-stackless">Stackful vs Stackless</a></li>
+    <li><a href="#the-coroutine-handlesobjects">The Coroutine Handles/Objects</a>
+      <ul>
+        <li><a href="#coroutine-handle">Coroutine Handle</a></li>
+        <li><a href="#awaiter">Awaiter</a></li>
+        <li><a href="#promise_type">promise_type</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-coroutine-operators">The Coroutine Operators</a>
+      <ul>
+        <li><a href="#co_await">co_await</a></li>
+        <li><a href="#co_yield">co_yield</a></li>
+        <li><a href="#co_return">co_return</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+</div>
+<p>The funtinality of coroutine in C++ is more of a semi-finished product. It doesn&rsquo;t provide the users a handy way to invoke a coroutine. For instance, in Golang, we can set off a <em>goroutine</em> readily by letting <em>go</em> of any functions. On the contrary, C++&rsquo;s post-20 standards come with some &lsquo;gadgets&rsquo; which are the building blocks for the programmers to build a fully functioning architecture of coroutine.</p>
+<h2 id="stackful-vs-stackless">Stackful vs Stackless</h2>
+<p>C++ coroutine is stackless which outperforms the stackful ones but trades off the code readability. Stackful coroutines fall short of the performance in that they shared stack frames with each other. The sharing mechanism is usually implemented using a system call <a href="https://man7.org/linux/man-pages/man3/getcontext.3.html">getcontext</a> which in a way may still go into kernel mode (like I guess&hellip;) when a coroutine yields its CPU to another one. However, stackless coroutines store their contexts at some designated places which, in general, are allocated on heap memory. Therefore, they can do most of their switch in/out in user mode which is a big performance gain.</p>
+<p>On the other hand, coding with stackful coroutines is more straight forward and the original codes don&rsquo;t need to be revised too much, because the coroutines are still running on a normal stack frame similar to that of a thread, while jugging with stackless ones make the programmers mentally aware of what they are doing and they have to explicitly tell the coroutines when are they going to yield/resume and adjust the funtions to a special return-typed ones.</p>
+<p>In C++, there are three important objects that help the coroutine magic work: <code>std::coroutine_handle&lt;&gt;</code>, <code>Awaiter</code> and <code>promise_type</code>. What&rsquo;s more, three operators deserve to be noticed as well: <code>co_await</code>, <code>co_yield</code>, and <code>co_return</code>.</p>
+<h2 id="the-coroutine-handlesobjects">The Coroutine Handles/Objects</h2>
+<p>MORE CONTENTS ARE UNDERWAY&hellip;</p>
+<h3 id="coroutine-handle">Coroutine Handle</h3>
+<h3 id="awaiter">Awaiter</h3>
+<h3 id="promise_type">promise_type</h3>
+<h2 id="the-coroutine-operators">The Coroutine Operators</h2>
+<p>todo&hellip;</p>
+<h3 id="co_await">co_await</h3>
+<h3 id="co_yield">co_yield</h3>
+<h3 id="co_return">co_return</h3>
+
+</content>
+<p>
+  
+</p>
+
+  </main>
+  <br>
+  <i>-> Edited on 2024.03.19</i>
+  <footer>
+    Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+    <br>
+    ©2024 Sylvan Xingyu Y. <i>All rights reserved.</i>
+</footer>
+
+    
+</body>
+
+</html>

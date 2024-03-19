@@ -9,6 +9,13 @@
     <copyright>Copyright © 2023, Sylvan.</copyright>
     <atom:link href="https://meteoryee.github.io/tech/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>C&#43;&#43; Coroutine Notes</title>
+      <link>https://meteoryee.github.io/tech/cxx-coro/</link>
+      <pubDate>Tue, 19 Mar 2024 23:01:52 +0800</pubDate>
+      <guid>https://meteoryee.github.io/tech/cxx-coro/</guid>
+      <description>C++ Coroutine Notes Stackful vs Stackless The Coroutine Handles/Objects Coroutine Handle Awaiter promise_type The Coroutine Operators co_await co_yield co_return The funtinality of coroutine in C++ is more of a semi-finished product. It doesn&amp;rsquo;t provide the users a handy way to invoke a coroutine. For instance, in Golang, we can set off a goroutine readily by letting go of any functions. On the contrary, C++&amp;rsquo;s post-20 standards come with some &amp;lsquo;gadgets&amp;rsquo; which are the building blocks for the programmers to build a fully functioning architecture of coroutine.</description>
+    </item>
+    <item>
       <title>Inverted Index Notes</title>
       <link>https://meteoryee.github.io/tech/inv-idx/</link>
       <pubDate>Mon, 19 Feb 2024 23:34:36 +0800</pubDate>
