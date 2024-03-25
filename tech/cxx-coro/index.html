@@ -17,7 +17,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://meteoryee.github.io/tech/cxx-coro/" /><meta property="og:image" content="https://meteoryee.github.io/images/share.png" /><meta property="article:section" content="tech" />
 <meta property="article:published_time" content="2024-03-19T23:01:52+08:00" />
-<meta property="article:modified_time" content="2024-03-24T15:01:07+08:00" /><meta property="og:site_name" content="Hugo ʕ•ᴥ•ʔ Bear" />
+<meta property="article:modified_time" content="2024-03-25T23:50:00+08:00" /><meta property="og:site_name" content="Hugo ʕ•ᴥ•ʔ Bear" />
 
 
 
@@ -30,7 +30,7 @@
 
 <meta itemprop="name" content="C&#43;&#43; Coroutine Notes">
 <meta itemprop="description" content="C&#43;&#43; Coroutine Notes Stackful vs Stackless The Coroutine Handles/Objects Coroutine Handle Awaiter promise_type The Coroutine Operators co_await co_yield co_return Reference The funtinality of coroutine in C&#43;&#43; is more of a semi-finished product. It doesn&rsquo;t provide the users a handy way to invoke a coroutine. For instance, in Golang, we can set off a goroutine readily by letting go of any functions. On the contrary, C&#43;&#43;&rsquo;s post-20 standards come with some &lsquo;gadgets&rsquo; which are the building blocks for the programmers to build a fully functioning architecture of coroutine."><meta itemprop="datePublished" content="2024-03-19T23:01:52+08:00" />
-<meta itemprop="dateModified" content="2024-03-24T15:01:07+08:00" />
+<meta itemprop="dateModified" content="2024-03-25T23:50:00+08:00" />
 <meta itemprop="wordCount" content="882"><meta itemprop="image" content="https://meteoryee.github.io/images/share.png" />
 <meta itemprop="keywords" content="" />
 <meta name="referrer" content="no-referrer-when-downgrade" />
@@ -256,7 +256,7 @@
 <p>The funtinality of coroutine in C++ is more of a semi-finished product. It doesn&rsquo;t provide the users a handy way to invoke a coroutine. For instance, in Golang, we can set off a <em>goroutine</em> readily by letting <em>go</em> of any functions. On the contrary, C++&rsquo;s post-20 standards come with some &lsquo;gadgets&rsquo; which are the building blocks for the programmers to build a fully functioning architecture of coroutine.</p>
 <p>Most of the content is taking reference to [1].</p>
 <h2 id="stackful-vs-stackless">Stackful vs Stackless</h2>
-<p>C++ coroutine is stackless which outperforms the stackful ones but trades off the code readability. Stackful coroutines fall short of the performance in that they shared stack frames with each other. The sharing mechanism is usually implemented using a system call <a href="https://man7.org/linux/man-pages/man3/getcontext.3.html">getcontext</a> which in a way may still go into kernel mode (like I guess&hellip;) when a coroutine yields its CPU to another one. However, stackless coroutines store their contexts at some designated places which, in general, are allocated on heap memory. Therefore, they can do most of their switch in/out in user mode which is a big performance gain.</p>
+<p>C++ coroutine is stackless which outperforms the stackful ones but trades off the code readability. Stackful coroutines fall short of the performance in that they share stack frames with each other. The sharing mechanism is usually implemented using a system call <a href="https://man7.org/linux/man-pages/man3/getcontext.3.html">getcontext</a> which in a way may still go into kernel mode (like I guess&hellip;) when a coroutine yields its CPU to another one. However, stackless coroutines store their contexts at some designated places which, in general, are allocated on heap memory. Therefore, they can do most of their switch in/out in user mode which is a big performance gain.</p>
 <p>On the other hand, coding with stackful coroutines is more straight forward and the original codes don&rsquo;t need to be revised too much, because the coroutines are still running on a normal stack frame similar to that of a thread, while jugging with stackless ones make the programmers mentally aware of what they are doing and they have to explicitly tell the coroutines when are they going to yield/resume and adjust the funtions to a special return-typed ones.</p>
 <p>In C++, there are three important objects that help the coroutine magic work: <code>std::coroutine_handle&lt;&gt;</code>, <code>Awaiter</code> and <code>promise_type</code>. What&rsquo;s more, three operators deserve to be noticed as well: <code>co_await</code>, <code>co_yield</code>, and <code>co_return</code>.</p>
 <h2 id="the-coroutine-handlesobjects">The Coroutine Handles/Objects</h2>
@@ -334,7 +334,7 @@
 
   </main>
   <br>
-  <i>-> Edited on 2024.03.24</i>
+  <i>-> Edited on 2024.03.25</i>
   <footer>
     Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
     <br>
