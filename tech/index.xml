@@ -9,6 +9,13 @@
     <copyright>Copyright © 2023, Sylvan.</copyright>
     <atom:link href="https://meteoryee.github.io/tech/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>ZooKeeper Notes</title>
+      <link>https://meteoryee.github.io/tech/zookeeper/</link>
+      <pubDate>Sat, 20 Apr 2024 22:15:02 +0800</pubDate>
+      <guid>https://meteoryee.github.io/tech/zookeeper/</guid>
+      <description>ZooKeeper Notes What is ZK Data Model Architecture Zab Reference Tens of thousands of the applications are running on distributed systems today, where ZooKeeper plays an important role in order to make the whole system work consistently. Here are my notes on it.&#xA;What is ZK ZK provides the uses a consistent view of a distributed system, and building blocks for synchronization across a cluster of nodes. For example, it has the ability to save the meta information, such as membership configurations, of a cluster.</description>
+    </item>
+    <item>
       <title>C&#43;&#43; Coroutine Notes</title>
       <link>https://meteoryee.github.io/tech/cxx-coro/</link>
       <pubDate>Tue, 19 Mar 2024 23:01:52 +0800</pubDate>

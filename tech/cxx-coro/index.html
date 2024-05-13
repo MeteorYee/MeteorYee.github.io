@@ -17,7 +17,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://meteoryee.github.io/tech/cxx-coro/" /><meta property="og:image" content="https://meteoryee.github.io/images/share.png" /><meta property="article:section" content="tech" />
 <meta property="article:published_time" content="2024-03-19T23:01:52+08:00" />
-<meta property="article:modified_time" content="2024-03-25T23:50:00+08:00" /><meta property="og:site_name" content="Hugo ʕ•ᴥ•ʔ Bear" />
+<meta property="article:modified_time" content="2024-05-13T23:50:40+08:00" /><meta property="og:site_name" content="Hugo ʕ•ᴥ•ʔ Bear" />
 
 
 
@@ -30,8 +30,8 @@
 
 <meta itemprop="name" content="C&#43;&#43; Coroutine Notes">
 <meta itemprop="description" content="C&#43;&#43; Coroutine Notes Stackful vs Stackless The Coroutine Handles/Objects Coroutine Handle Awaiter promise_type The Coroutine Operators co_await co_yield co_return Reference The funtinality of coroutine in C&#43;&#43; is more of a semi-finished product. It doesn&rsquo;t provide the users a handy way to invoke a coroutine. For instance, in Golang, we can set off a goroutine readily by letting go of any functions. On the contrary, C&#43;&#43;&rsquo;s post-20 standards come with some &lsquo;gadgets&rsquo; which are the building blocks for the programmers to build a fully functioning architecture of coroutine."><meta itemprop="datePublished" content="2024-03-19T23:01:52+08:00" />
-<meta itemprop="dateModified" content="2024-03-25T23:50:00+08:00" />
-<meta itemprop="wordCount" content="882"><meta itemprop="image" content="https://meteoryee.github.io/images/share.png" />
+<meta itemprop="dateModified" content="2024-05-13T23:50:40+08:00" />
+<meta itemprop="wordCount" content="963"><meta itemprop="image" content="https://meteoryee.github.io/images/share.png" />
 <meta itemprop="keywords" content="" />
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
@@ -276,7 +276,25 @@
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">constexpr</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">await_resume</span>() <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">noexcept</span> {}
 </span></span><span style="display:flex;"><span>};
 </span></span></code></pre></div><p>C++ provides two built-in awaiters: <code>std::suspend_never</code> and <code>std::suspend_always</code>. As the names show, one never switches out when calling co_await while another always switches out. Those two are really helpful when working with the <code>promise_type</code> illustrated below.</p>
-<h3 id="promise_type">promise_type</h3>
+<p>Moreover, <code>await_transform</code> can be used to customize the <code>co_await</code> behavior, which depends on the type of the expression evaluated. Basically, c++ will look for <code>await_transform</code> overloads when evaluating a <code>co_await</code> expression.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">MyAwaitable</span> {
+</span></span><span style="display:flex;"><span>    T value;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">await_ready</span>() { <span style="color:#66d9ef">return</span> true; }
+</span></span><span style="display:flex;"><span>    T <span style="color:#a6e22e">await_resume</span>() { <span style="color:#66d9ef">return</span> value; }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">await_suspend</span>(std<span style="color:#f92672">::</span>coroutine_handle<span style="color:#f92672">&lt;&gt;</span>) {}
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>MyAwaitable<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> await_transform(<span style="color:#66d9ef">int</span> value) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {value}; <span style="color:#75715e">// 42, as an int, fits into here
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>MyAwaitable<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> asyncFunction() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> result <span style="color:#f92672">=</span> <span style="color:#66d9ef">co_await</span> <span style="color:#ae81ff">42</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">co_return</span> result;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="promise_type">promise_type</h3>
 <p>C++&rsquo;s standard requires the return type <code>R</code> of a coroutine must be an object with a nested type <code>R::promise_type</code>. The <code>promise_type</code> must define some fixed-name methods in order to fulfill its responsibilities.</p>
 <ul>
 <li>initial_suspend: return an awaiter object to decide whether to suspend the coroutine even before the execution of the user defined function</li>
@@ -334,7 +352,7 @@
 
   </main>
   <br>
-  <i>-> Edited on 2024.03.25</i>
+  <i>-> Edited on 2024.05.13</i>
   <footer>
     Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
     <br>
