@@ -1,2 +1,2 @@
 User-Agent: *
-Sitemap: https://meteoryee.github.io/sitemap.xml
+Sitemap: https://example.com/sitemap.xml

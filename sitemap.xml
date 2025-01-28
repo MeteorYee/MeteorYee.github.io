@@ -2,40 +2,40 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://meteoryee.github.io/tech/lambda/</loc>
-    <lastmod>2024-10-13T21:08:12+08:00</lastmod>
+    <loc>https://example.com/tech/</loc>
+    <lastmod>2024-11-27T23:40:07+08:00</lastmod>
   </url><url>
-    <loc>https://meteoryee.github.io/tech/zookeeper/</loc>
-    <lastmod>2024-05-13T23:50:40+08:00</lastmod>
+    <loc>https://example.com/tech/lambda_arch/</loc>
+    <lastmod>2025-01-28T14:15:25+08:00</lastmod>
   </url><url>
-    <loc>https://meteoryee.github.io/tech/cxx-coro/</loc>
-    <lastmod>2024-05-13T23:50:40+08:00</lastmod>
+    <loc>https://example.com/tech/zookkeeper/</loc>
+    <lastmod>2025-01-28T14:15:25+08:00</lastmod>
   </url><url>
-    <loc>https://meteoryee.github.io/</loc>
-    <lastmod>2024-03-19T23:45:11+08:00</lastmod>
+    <loc>https://example.com/tech/c&#43;&#43;_coroutine/</loc>
+    <lastmod>2025-01-28T14:15:25+08:00</lastmod>
   </url><url>
-    <loc>https://meteoryee.github.io/what-am-i-living-up-to/</loc>
-    <lastmod>2024-05-13T23:50:40+08:00</lastmod>
+    <loc>https://example.com/what-am-i-living-up-to/</loc>
+    <lastmod>2025-01-28T14:15:25+08:00</lastmod>
   </url><url>
-    <loc>https://meteoryee.github.io/tech/inv-idx/</loc>
-    <lastmod>2024-03-19T23:45:11+08:00</lastmod>
+    <loc>https://example.com/tech/inv_idx/</loc>
+    <lastmod>2025-01-28T14:15:25+08:00</lastmod>
   </url><url>
-    <loc>https://meteoryee.github.io/r%C3%A9sum%C3%A9/</loc>
-    <lastmod>2024-02-05T22:49:00+08:00</lastmod>
+    <loc>https://example.com/a-self-retro-how-does-my-personality-come-into-being/</loc>
+    <lastmod>2025-01-28T14:15:25+08:00</lastmod>
   </url><url>
-    <loc>https://meteoryee.github.io/a-self-retro-how-does-my-personality-come-into-being/</loc>
-    <lastmod>2024-05-13T23:50:40+08:00</lastmod>
+    <loc>https://example.com/why-did-i-leave/</loc>
+    <lastmod>2025-01-28T14:15:25+08:00</lastmod>
   </url><url>
-    <loc>https://meteoryee.github.io/why-did-i-leave/</loc>
-    <lastmod>2024-02-22T23:46:56+08:00</lastmod>
+    <loc>https://example.com/blog/</loc>
+    <lastmod>2024-11-27T23:40:07+08:00</lastmod>
   </url><url>
-    <loc>https://meteoryee.github.io/blog/</loc>
-    <lastmod>2024-02-22T23:46:56+08:00</lastmod>
+    <loc>https://example.com/gallery/</loc>
+    <lastmod>2025-01-28T14:15:25+08:00</lastmod>
   </url><url>
-    <loc>https://meteoryee.github.io/gallery/</loc>
-    <lastmod>2024-10-13T21:08:12+08:00</lastmod>
+    <loc>https://example.com/resume/</loc>
+    <lastmod>2025-01-28T14:15:25+08:00</lastmod>
   </url><url>
-    <loc>https://meteoryee.github.io/tech/</loc>
-    <lastmod>2024-02-22T23:46:56+08:00</lastmod>
+    <loc>https://example.com/</loc>
+    <lastmod>2025-01-28T14:15:25+08:00</lastmod>
   </url>
 </urlset>

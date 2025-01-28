@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="https://example.com/images/favicon.png" />
+<title>Inverted Index | Sylvan&#39;s Abracadabra</title>
+<meta name="title" content="Inverted Index" />
+<meta name="description" content="I’ve been working on inverted index these days. Hence, it’s a good time to do some summaries on it. I am going to split the notes into three parts: what is an inverted index, the possible file organization of it, and some of the optimizations to enhance its working efficiency.
+The Definition
+As the name shows, it’s inverted, but what is the inversion meant to be? Let’s say we have a big set of documents and want to store them neatly. Each document is identified by an unique ID called DOCID. An index of such a whole bunch of data is the mappings from every single DOCID to its correspongding values. The value usually is a structured or semi-structured file which may contain the tokenized terms. Therefore, if we reverse it, the mappings will be from the terms to all the DOCIDs that contain the specific term. Although the structure of inverted index is faily simple, it’s been widely used in many sophisticated systems such as search engine and database." />
+<meta name="keywords" content="" />
+
+
+<meta property="og:url" content="https://example.com/tech/inv_idx/">
+  <meta property="og:site_name" content="Sylvan&#39;s Abracadabra">
+  <meta property="og:title" content="Inverted Index">
+  <meta property="og:description" content="I’ve been working on inverted index these days. Hence, it’s a good time to do some summaries on it. I am going to split the notes into three parts: what is an inverted index, the possible file organization of it, and some of the optimizations to enhance its working efficiency.
+The Definition As the name shows, it’s inverted, but what is the inversion meant to be? Let’s say we have a big set of documents and want to store them neatly. Each document is identified by an unique ID called DOCID. An index of such a whole bunch of data is the mappings from every single DOCID to its correspongding values. The value usually is a structured or semi-structured file which may contain the tokenized terms. Therefore, if we reverse it, the mappings will be from the terms to all the DOCIDs that contain the specific term. Although the structure of inverted index is faily simple, it’s been widely used in many sophisticated systems such as search engine and database.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="tech">
+    <meta property="article:published_time" content="2024-02-19T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-01-28T14:15:25+08:00">
+    <meta property="og:image" content="https://example.com/images/share.png">
+
+
+
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://example.com/images/share.png">
+  <meta name="twitter:title" content="Inverted Index">
+  <meta name="twitter:description" content="I’ve been working on inverted index these days. Hence, it’s a good time to do some summaries on it. I am going to split the notes into three parts: what is an inverted index, the possible file organization of it, and some of the optimizations to enhance its working efficiency.
+The Definition As the name shows, it’s inverted, but what is the inversion meant to be? Let’s say we have a big set of documents and want to store them neatly. Each document is identified by an unique ID called DOCID. An index of such a whole bunch of data is the mappings from every single DOCID to its correspongding values. The value usually is a structured or semi-structured file which may contain the tokenized terms. Therefore, if we reverse it, the mappings will be from the terms to all the DOCIDs that contain the specific term. Although the structure of inverted index is faily simple, it’s been widely used in many sophisticated systems such as search engine and database.">
+
+
+
+
+  <meta itemprop="name" content="Inverted Index">
+  <meta itemprop="description" content="I’ve been working on inverted index these days. Hence, it’s a good time to do some summaries on it. I am going to split the notes into three parts: what is an inverted index, the possible file organization of it, and some of the optimizations to enhance its working efficiency.
+The Definition As the name shows, it’s inverted, but what is the inversion meant to be? Let’s say we have a big set of documents and want to store them neatly. Each document is identified by an unique ID called DOCID. An index of such a whole bunch of data is the mappings from every single DOCID to its correspongding values. The value usually is a structured or semi-structured file which may contain the tokenized terms. Therefore, if we reverse it, the mappings will be from the terms to all the DOCIDs that contain the specific term. Although the structure of inverted index is faily simple, it’s been widely used in many sophisticated systems such as search engine and database.">
+  <meta itemprop="datePublished" content="2024-02-19T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-01-28T14:15:25+08:00">
+  <meta itemprop="wordCount" content="754">
+  <meta itemprop="image" content="https://example.com/images/share.png">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  body {
+    font-family: Verdana, sans-serif;
+    margin: auto;
+    padding: 20px;
+    max-width: 720px;
+    text-align: left;
+    background-color: #fff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #444;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b {
+    color: #222;
+  }
+
+  a {
+    color: #3273dc;
+     
+  }
+
+  .title {
+    text-decoration: none;
+    border: 0;
+  }
+
+  .title span {
+    font-weight: 400;
+  }
+
+  nav a {
+    margin-right: 10px;
+  }
+
+  textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  input {
+    font-size: 16px;
+  }
+
+  content {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    padding: 2px 5px;
+    background-color: #f2f2f2;
+  }
+
+  pre code {
+    color: #222;
+    display: block;
+    padding: 20px;
+    white-space: pre-wrap;
+    font-size: 14px;
+    overflow-x: auto;
+  }
+
+  div.highlight pre {
+    background-color: initial;
+    color: initial;
+  }
+
+  div.highlight code {
+    background-color: unset;
+    color: unset;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: #222;
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px;
+    text-align: center;
+  }
+
+  .helptext {
+    color: #777;
+    font-size: small;
+  }
+
+  .errorlist {
+    color: #eba613;
+    font-size: small;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: #8b6fcb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #333;
+      color: #ddd;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    strong,
+    b {
+      color: #eee;
+    }
+
+    a {
+      color: #8cc2dd;
+    }
+
+    code {
+      background-color: #777;
+    }
+
+    pre code {
+      color: #ddd;
+    }
+
+    blockquote {
+      color: #ccc;
+    }
+
+    textarea,
+    input {
+      background-color: #252525;
+      color: #ddd;
+    }
+
+    .helptext {
+      color: #aaa;
+    }
+  }
+
+</style>
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>Sylvan&#39;s Abracadabra</h2>
+</a>
+<nav><a href="/">Home</a>
+
+<a href="/gallery/">Gallery</a>
+
+<a href="/resume/">Résumé</a>
+
+<a href="/tech/">Tech</a>
+
+
+<a href="/blog">Blog</a>
+
+</nav>
+</header>
+  <main>
+
+<h1>Inverted Index</h1>
+<p>
+  <i>
+    <time datetime='2024-02-19' pubdate>
+      19 Feb, 2024
+    </time>
+  </i>
+</p>
+
+<content>
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-definition">The Definition</a></li>
+    <li><a href="#the-file-organization">The File Organization</a></li>
+    <li><a href="#optimizations">Optimizations</a>
+      <ul>
+        <li><a href="#cache">Cache</a></li>
+        <li><a href="#compression">Compression</a></li>
+        <li><a href="#smart-traversing">Smart Traversing</a></li>
+      </ul>
+    </li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav>
+  <p>I’ve been working on inverted index these days. Hence, it’s a good time to do some summaries on it. I am going to split the notes into three parts: what is an inverted index, the possible file organization of it, and some of the optimizations to enhance its working efficiency.</p>
+<h2 id="the-definition">The Definition</h2>
+<p>As the name shows, it’s inverted, but what is the inversion meant to be? Let’s say we have a big set of documents and want to store them neatly. Each document is identified by an unique ID called DOCID. An index of such a whole bunch of data is the mappings from every single DOCID to its correspongding values. The value usually is a structured or semi-structured file which may contain the tokenized terms. Therefore, if we reverse it, the mappings will be from the terms to all the DOCIDs that contain the specific term. Although the structure of inverted index is faily simple, it’s been widely used in many sophisticated systems such as search engine and database.</p>
+<h2 id="the-file-organization">The File Organization</h2>
+<p>There are two basic parts of an inverted index: term dictionary and posting list. The dictionary helps locate the posting list of the designated term, where the posting list stores all the DOCIDs of the term. A basic possbile file organization of an inverted index looks like the following:</p>
+<p><img src="/images/tech/inv-idx-file-org.svg" alt="file organization of inverted index"></p>
+<p>There are usually two files: a dictionary file that contains all the terms of the index and the corresponding offsets in a posting file. And, hence, the posting file is where the DOCID lists are stored. The files are split into blocks of the same size to be disk friendly. However, the structure is a vanilla one while the real implementation is way more complicated in the industry. Particularly, the skip list in the posting file is used to help traversing posting list efficiently. The posting list is sorted by DOCID by convention. Therefore, each item of the skip list captures at least the information of the last DOCID of a DOCID list block and the number of DOCIDs in that block. By leveraging the skip list, one can skip the unnecessary decoding of some file blocks when it only needs to seek some specific DOCID.</p>
+<h2 id="optimizations">Optimizations</h2>
+<p>There are many interesting optimizations on the performance of inverted index. For instance, Apache Lucene has done lots of relevant work on it: <a href="https://cwiki.apache.org/confluence/display/lucene/LucenePapers">https://cwiki.apache.org/confluence/display/lucene/LucenePapers</a></p>
+<h3 id="cache">Cache</h3>
+<p>List caching: Disk IO is expensive, so caching is a good way get around it. This technique caches the block of posting list in memory so that when the frequently used terms are accessed, there won’t be any IOs to fetch the posting lists on disk.
+Result caching: Ideally it’s possible as well to cache the result data at query layer. It has got a bigger granularity than list caching and it also requires no frequent updates upon the term.
+Both of the two ideas are described in [1].</p>
+<h3 id="compression">Compression</h3>
+<p>As inverted index stores enormous amount of data, it usually consumes a lot of storage space. Therefore, an excellent compression algorithm will help saving hardware resources while, in the meantime, doesn’t hurt the query latency too much.</p>
+<p>There are algorithms such as: Variable-Byte, Simple9/Simple16, and PForDelta in [1]. According to the reference paper, PForDelta is the optimal one.</p>
+<h3 id="smart-traversing">Smart Traversing</h3>
+<p>The common pattern of an inverted index query is first finding the right positing list. Then it is encapsulated as an iterator object with the ability to spit out a DOCID every time it gets invoked. Finally, the query starts to traverse the iterator. It usually passes a DOCID d_i to the iterator and expects it will return a DOCID d that is equal to or greater than d_i. When the iterator says there is no more documents, generally by a special DOCID, the whole process is finished.</p>
+<p>If a posting list contains millions of documents, the whole searching process can be considerably slow. To encounter this inefficiency, some meta info are added to the file blocks of the posting list file, such as [2]. The paper introduces Block Max WAND (BMW) algorithm which stores the maximum score among all the documents in the current file block. The score can hint the query layer whether or not to decompress the block so that the decompression of lower scored blocks can be prevented and thus the query latency is improved.</p>
+<h2 id="reference">Reference</h2>
+<p>[1]. Performance of Compressed Inverted List Caching in Search Engines. Jiangong Zhang, Xiaohui Long, Torsten Suel. (2008)</p>
+<p>[2]. Faster Top-k Document Retrieval Using Block-Max Indexes. Shuai Ding, Torsten Suel (2011)</p>
+
+</content>
+<p>
+  
+</p>
+
+    <br>
+    <i>-> Edited on Jan 28, 2025</i>
+  </main>
+  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+<br>
+©2025 Sylvan Xingyu Y. <i>All rights reserved.</i>
+
+</footer>
+
+    
+</body>
+
+</html>
