@@ -2,39 +2,39 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tech on Sylvan&#39;s Abracadabra</title>
-    <link>https://example.com/tech/</link>
+    <link>https://meteoryee.github.io/tech/</link>
     <description>Recent content in Tech on Sylvan&#39;s Abracadabra</description>
     <generator>Hugo</generator>
     <language>en-US</language>
     <copyright>Copyright © 2024, Sylvan Xingyu Y.</copyright>
     <lastBuildDate>Tue, 28 Jan 2025 14:15:25 +0800</lastBuildDate>
-    <atom:link href="https://example.com/tech/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://meteoryee.github.io/tech/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Lambda Architecture</title>
-      <link>https://example.com/tech/lambda_arch/</link>
+      <link>https://meteoryee.github.io/tech/lambda_arch/</link>
       <pubDate>Sun, 13 Oct 2024 00:00:00 +0000</pubDate>
-      <guid>https://example.com/tech/lambda_arch/</guid>
+      <guid>https://meteoryee.github.io/tech/lambda_arch/</guid>
       <description>&lt;h2 id=&#34;from-unix-pipeline-to-lambda-architecture&#34;&gt;From Unix Pipeline to Lambda Architecture&lt;/h2&gt;&#xA;&lt;p&gt;Unix pipeline is a simple but elegant way to make multiple processes conmunicate with each other. Each process only observes to a basic principle, do one thing well, but if they work in a row, being chained together by the pipleline mechanism, many complicated tasks can be accomplished. For example, we can readily do some statistical analysis upon the log files of a software using cat, grep, awk, sort, uniq.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Zookeeper</title>
-      <link>https://example.com/tech/zookkeeper/</link>
+      <link>https://meteoryee.github.io/tech/zookkeeper/</link>
       <pubDate>Sat, 20 Apr 2024 00:00:00 +0000</pubDate>
-      <guid>https://example.com/tech/zookkeeper/</guid>
+      <guid>https://meteoryee.github.io/tech/zookkeeper/</guid>
       <description>&lt;p&gt;Tens of thousands of the applications are running on distributed systems today, where ZooKeeper plays an important role in order to make the whole system work consistently. Here are my notes on it.&lt;/p&gt;&#xA;&lt;h2 id=&#34;what-is-zk&#34;&gt;What is ZK&lt;/h2&gt;&#xA;&lt;p&gt;ZK provides the uses a consistent view of a distributed system, and building blocks for synchronization across a cluster of nodes. For example, it has the ability to save the meta information, such as membership configurations, of a cluster. What’s more, users can use it to implement a distributed lock required by upper level applications.&lt;/p&gt;</description>
     </item>
     <item>
       <title>C&#43;&#43; coroutine</title>
-      <link>https://example.com/tech/c&#43;&#43;_coroutine/</link>
+      <link>https://meteoryee.github.io/tech/c&#43;&#43;_coroutine/</link>
       <pubDate>Tue, 19 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://example.com/tech/c&#43;&#43;_coroutine/</guid>
+      <guid>https://meteoryee.github.io/tech/c&#43;&#43;_coroutine/</guid>
       <description>&lt;p&gt;The funtinality of coroutine in C++ is more of a semi-finished product. It doesn’t provide the users a handy way to invoke a coroutine. For instance, in Golang, we can set off a goroutine readily by letting go of any functions. On the contrary, C++’s post-20 standards come with some ‘gadgets’ which are the building blocks for the programmers to build a fully functioning architecture of coroutine.&lt;/p&gt;&#xA;&lt;p&gt;Most of the content is taking reference to [1].&lt;/p&gt;</description>
     </item>
     <item>
       <title>Inverted Index</title>
-      <link>https://example.com/tech/inv_idx/</link>
+      <link>https://meteoryee.github.io/tech/inv_idx/</link>
       <pubDate>Mon, 19 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>https://example.com/tech/inv_idx/</guid>
+      <guid>https://meteoryee.github.io/tech/inv_idx/</guid>
       <description>&lt;p&gt;I’ve been working on inverted index these days. Hence, it’s a good time to do some summaries on it. I am going to split the notes into three parts: what is an inverted index, the possible file organization of it, and some of the optimizations to enhance its working efficiency.&lt;/p&gt;&#xA;&lt;h2 id=&#34;the-definition&#34;&gt;The Definition&lt;/h2&gt;&#xA;&lt;p&gt;As the name shows, it’s inverted, but what is the inversion meant to be? Let’s say we have a big set of documents and want to store them neatly. Each document is identified by an unique ID called DOCID. An index of such a whole bunch of data is the mappings from every single DOCID to its correspongding values. The value usually is a structured or semi-structured file which may contain the tokenized terms. Therefore, if we reverse it, the mappings will be from the terms to all the DOCIDs that contain the specific term. Although the structure of inverted index is faily simple, it’s been widely used in many sophisticated systems such as search engine and database.&lt;/p&gt;</description>
     </item>
   </channel>
