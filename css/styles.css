@@ -1,0 +1,16 @@
+/* Custom style for list item links */
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 4px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #0056b3;
+    background-color: #f8f9fa;
+    text-decoration: underline;
+}
