@@ -13,47 +13,76 @@
 
 
 <meta property="og:url" content="https://meteoryee.github.io/why-did-i-leave/">
-  <meta property="og:site_name" content="Sylvan&#39;s Abracadabra">
-  <meta property="og:title" content="Why Did I leave">
-  <meta property="og:description" content="huawei story">
-  <meta property="og:locale" content="en_US">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="blog">
-    <meta property="article:published_time" content="2024-01-05T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-01-28T14:15:25+08:00">
-    <meta property="og:image" content="https://meteoryee.github.io/images/share.png">
+	<meta property="og:site_name" content="Sylvan&#39;s Abracadabra">
+	<meta property="og:title" content="Why Did I leave">
+	<meta property="og:description" content="huawei story">
+	<meta property="og:locale" content="en_US">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="blog">
+		<meta property="article:published_time" content="2024-01-05T00:00:00+00:00">
+		<meta property="article:modified_time" content="2025-01-28T14:15:25+08:00">
+		<meta property="og:image" content="https://meteoryee.github.io/images/share.png">
 
 
 
 
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://meteoryee.github.io/images/share.png">
-  <meta name="twitter:title" content="Why Did I leave">
-  <meta name="twitter:description" content="huawei story">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:image" content="https://meteoryee.github.io/images/share.png">
+	<meta name="twitter:title" content="Why Did I leave">
+	<meta name="twitter:description" content="huawei story">
 
 
 
 
-  <meta itemprop="name" content="Why Did I leave">
-  <meta itemprop="description" content="huawei story">
-  <meta itemprop="datePublished" content="2024-01-05T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2025-01-28T14:15:25+08:00">
-  <meta itemprop="wordCount" content="25">
-  <meta itemprop="image" content="https://meteoryee.github.io/images/share.png">
+	<meta itemprop="name" content="Why Did I leave">
+	<meta itemprop="description" content="huawei story">
+	<meta itemprop="datePublished" content="2024-01-05T00:00:00+00:00">
+	<meta itemprop="dateModified" content="2025-01-28T14:15:25+08:00">
+	<meta itemprop="wordCount" content="25">
+	<meta itemprop="image" content="https://meteoryee.github.io/images/share.png">
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
   <style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f8faf9;
+    --text: #2d3330;
+    --muted: #66736d;
+    --heading: #171b19;
+    --link: #2b6f73;
+    --link-hover: #164f54;
+    --border: #d9e0dc;
+    --surface: #ffffff;
+    --code-bg: #eef3f1;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    background: var(--bg);
+  }
+
   body {
-    font-family: Verdana, sans-serif;
+    font-family:
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
     margin: auto;
-    padding: 20px;
-    max-width: 720px;
+    padding: clamp(18px, 5vw, 32px);
+    width: 100%;
+    max-width: 760px;
     text-align: left;
-    background-color: #fff;
+    background-color: var(--bg);
     word-wrap: break-word;
     overflow-wrap: break-word;
-    line-height: 1.5;
-    color: #444;
+    line-height: 1.75;
+    color: var(--text);
+    letter-spacing: 0;
   }
 
   h1,
@@ -64,12 +93,61 @@
   h6,
   strong,
   b {
-    color: #222;
+    color: var(--heading);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 1.25;
+    margin: 2rem 0 0.85rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.45rem;
+  }
+
+  h3 {
+    font-size: 1.18rem;
+  }
+
+  p {
+    margin: 0 0 1.15rem;
   }
 
   a {
-    color: #3273dc;
-     
+    color: var(--link);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    transition:
+      color 0.16s ease,
+      border-color 0.16s ease,
+      background-color 0.16s ease;
+  }
+
+  a:hover {
+    color: var(--link-hover);
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--link);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .site-header {
+    margin: 0 0 2.7rem;
+    padding-top: 0.2rem;
   }
 
   .title {
@@ -77,12 +155,39 @@
     border: 0;
   }
 
-  .title span {
-    font-weight: 400;
+  .site-title {
+    display: inline-block;
+    color: var(--heading);
   }
 
-  nav a {
-    margin-right: 10px;
+  .site-title h2 {
+    margin: 0;
+    font-size: 1.7rem;
+    font-weight: 650;
+    letter-spacing: 0;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 1.45rem;
+    margin-top: 1.05rem;
+  }
+
+  a.nav-link {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.96rem;
+    font-weight: 500;
+    line-height: 1.5;
+    border-bottom: 1px solid transparent;
+    padding: 0.1rem 0;
+  }
+
+  a.nav-link:hover,
+  a.nav-link.is-active {
+    color: var(--heading);
+    border-bottom-color: var(--border);
   }
 
   textarea {
@@ -94,56 +199,213 @@
     font-size: 16px;
   }
 
+  main {
+    min-height: 55vh;
+  }
+
+  content,
+  .content-body {
+    display: block;
+  }
+
   content {
-    line-height: 1.6;
+    line-height: 1.75;
+  }
+
+  .page-header,
+  .list-header {
+    margin-bottom: 2rem;
+  }
+
+  .page-header h1,
+  .list-header h1 {
+    margin-top: 0;
+    margin-bottom: 0.55rem;
+  }
+
+  .page-meta,
+  .page-edited,
+  .home-updated,
+  .archive-date,
+  .post-summary,
+  .list-intro,
+  footer {
+    color: var(--muted);
+  }
+
+  .page-meta,
+  .page-edited,
+  .home-updated,
+  .archive-date,
+  footer {
+    font-size: 0.92rem;
+  }
+
+  .page-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.85rem;
+    margin: 0;
+  }
+
+  .page-meta a {
+    color: inherit;
+  }
+
+  .page-edited {
+    margin-top: 2.75rem;
+  }
+
+  .home-updated {
+    margin-bottom: 1.4rem;
+  }
+
+  .content-body ul,
+  .content-body ol {
+    padding-left: 1.35rem;
+  }
+
+  .content-body li + li {
+    margin-top: 0.35rem;
   }
 
   table {
+    display: block;
     width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    border-spacing: 0;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+
+  th,
+  td {
+    border-bottom: 1px solid var(--border);
+    padding: 0.45rem 0.6rem;
+    text-align: left;
   }
 
   img {
+    display: block;
     max-width: 100%;
+    height: auto;
+  }
+
+  .content-body img {
+    margin: 1.6rem 0 1rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+  }
+
+  .content-body img[alt="wechat"] {
+    width: min(320px, 82vw);
+    margin-left: auto;
+    margin-right: auto;
   }
 
   code {
-    padding: 2px 5px;
-    background-color: #f2f2f2;
+    font-family:
+      ui-monospace,
+      SFMono-Regular,
+      Menlo,
+      Monaco,
+      Consolas,
+      "Liberation Mono",
+      monospace;
+    font-size: 0.92em;
+  }
+
+  :not(pre) > code {
+    padding: 0.12rem 0.32rem;
+    border-radius: 4px;
+    background-color: var(--code-bg);
+  }
+
+  pre {
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background-color: var(--code-bg);
   }
 
   pre code {
-    color: #222;
     display: block;
-    padding: 20px;
-    white-space: pre-wrap;
-    font-size: 14px;
+    min-width: max-content;
+    padding: 1rem;
+    color: var(--text);
+    background: transparent;
+    white-space: pre;
+    font-size: 0.86rem;
     overflow-x: auto;
   }
 
+  div.highlight {
+    margin: 1.5rem 0;
+  }
+
   div.highlight pre {
-    background-color: initial;
-    color: initial;
+    margin: 0;
+  }
+
+  div.highlight pre {
+    color: var(--text);
   }
 
   div.highlight code {
-    background-color: unset;
-    color: unset;
+    background-color: transparent;
+    color: inherit;
   }
 
   blockquote {
-    border-left: 1px solid #999;
-    color: #222;
-    padding-left: 20px;
-    font-style: italic;
+    margin: 1.5rem 0;
+    border-left: 2px solid var(--border);
+    color: var(--muted);
+    padding: 0.2rem 0 0.2rem 1rem;
+  }
+
+  blockquote p:last-child {
+    margin-bottom: 0;
+  }
+
+  #TableOfContents {
+    display: block;
+    margin: 1.5rem 0 2rem;
+    padding: 0.85rem 1rem;
+    border-left: 2px solid var(--border);
+    background: var(--surface);
+  }
+
+  #TableOfContents ul {
+    margin: 0;
+    padding-left: 1.05rem;
+  }
+
+  #TableOfContents li + li {
+    margin-top: 0.25rem;
+  }
+
+  #TableOfContents a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  #TableOfContents a:hover {
+    color: var(--link-hover);
+    text-decoration: underline;
   }
 
   footer {
-    padding: 25px;
+    margin-top: 3rem;
+    padding: 1.5rem 0 0.4rem;
+    border-top: 1px solid var(--border);
     text-align: center;
   }
 
   .helptext {
-    color: #777;
+    color: var(--muted);
     font-size: small;
   }
 
@@ -156,87 +418,145 @@
   ul.blog-posts {
     list-style-type: none;
     padding: unset;
+    margin: 1.5rem 0 0;
+    border-top: 1px solid var(--border);
   }
 
   ul.blog-posts li {
-    display: flex;
+    display: grid;
+    grid-template-columns: 9.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
   }
 
   ul.blog-posts li span {
-    flex: 0 0 130px;
+    min-width: 0;
   }
 
   ul.blog-posts li a:visited {
     color: #8b6fcb;
   }
 
+  .archive-body {
+    min-width: 0;
+  }
+
+  a.list-item-link {
+    color: var(--heading);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  a.list-item-link:hover {
+    color: var(--link-hover);
+    text-decoration: underline;
+  }
+
+  .post-summary {
+    margin: 0.25rem 0 0;
+    font-size: 0.96rem;
+    line-height: 1.55;
+  }
+
+  .gallery {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .gallery-item {
+    margin: 0;
+  }
+
+  .gallery-item + .gallery-item {
+    margin-top: 2rem;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    margin: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+  }
+
+  .gallery-item figcaption {
+    padding-top: 0.75rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  .gallery-item figcaption strong {
+    display: block;
+    margin-bottom: 0.15rem;
+    color: var(--heading);
+    font-weight: 650;
+  }
+
+  .gallery-item figcaption span {
+    display: block;
+  }
+
+  .gallery-item figcaption p {
+    margin: 0.45rem 0 0;
+  }
+
   @media (prefers-color-scheme: dark) {
-    body {
-      background-color: #333;
-      color: #ddd;
-    }
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    strong,
-    b {
-      color: #eee;
-    }
-
-    a {
-      color: #8cc2dd;
-    }
-
-    code {
-      background-color: #777;
-    }
-
-    pre code {
-      color: #ddd;
-    }
-
-    blockquote {
-      color: #ccc;
+    :root {
+      --bg: #1f2422;
+      --text: #dbe2de;
+      --muted: #9aa9a2;
+      --heading: #f3f6f4;
+      --link: #8ccfd0;
+      --link-hover: #b8e7e5;
+      --border: #3a4540;
+      --surface: #272d2a;
+      --code-bg: #303734;
     }
 
     textarea,
     input {
-      background-color: #252525;
-      color: #ddd;
+      background-color: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
     }
 
-    .helptext {
-      color: #aaa;
+    ul.blog-posts li a:visited {
+      color: #c1a7e8;
     }
   }
 
-  a.list-item-link {
-    color: #000000;
-    text-decoration: none;
-    font-weight: 500;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-  }
+  @media (max-width: 540px) {
+    body {
+      line-height: 1.7;
+    }
 
-  a.list-item-link:hover {
-    background-color: #f8f9fa;
-    text-decoration: underline;
-  }
+    h1 {
+      font-size: 1.72rem;
+    }
 
-  a.nav-link {
-    font-size: 17px;
-    color: #7f7f7f;
-    text-decoration: none;
-    font-weight: 500;
-     
-  }
+    .site-header {
+      margin-bottom: 2.2rem;
+    }
 
-  a.nav-link:hover {
-    text-decoration: underline;
+    nav {
+      gap: 0.25rem 1.05rem;
+    }
+
+    ul.blog-posts li {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+      padding: 0.95rem 0;
+    }
+
+    .page-meta {
+      display: block;
+    }
+
+    .page-meta span {
+      display: block;
+    }
   }
 
 </style>
@@ -244,38 +564,55 @@
 </head>
 
 <body>
-  <header><a href="/" class="title">
+  <header class="site-header"><a href="/" class="title site-title">
   <h2>Sylvan&#39;s Abracadabra</h2>
 </a>
 <nav>
 
+
 <a href="/gallery/" class="nav-link">Gallery</a>
+
 
 <a href="/hidden/" class="nav-link">Hidden</a>
 
+
 <a href="/resume/" class="nav-link">Résumé</a>
+
 
 <a href="/tech/" class="nav-link">Tech</a>
 
 
-<a href="/blog" class="nav-link">Blog</a>
+
+<a href="/blog/" class="nav-link is-active" aria-current="page">Blog</a>
 
 </nav>
 </header>
   <main>
-
-<h1>Why Did I leave</h1>
-<p>
-  <i>
-    <time datetime='2024-01-05' pubdate>
-      05 Jan, 2024
-    </time>
-  </i>
-</p>
-
-<content>
-  <nav id="TableOfContents"></nav>
-  <p>2023 年在我身上发生的最大一件事，莫过于离开了我工作三年多的公司。在一些领导诧异和不解的目光中，我依然做出了这样的决定，即使一些很看好我的人惋惜地说道：你将来一定会后悔的。现如今，2024 伊始，我不由地回望自己过去的一年，关于这件事心中还是有许多想说的，所以就将这些想法记录在这里吧。若有幸一些还在关注我的前同事能找到这儿，也希望能解答他们心中对我的困惑吧。</p>
+<article class="page">
+  
+  <header class="page-header">
+    <h1>Why Did I leave</h1>
+    
+    
+    
+    <p class="page-meta">
+      
+      <span>
+        Published
+        <time datetime='2024-01-05' pubdate>
+          05 Jan, 2024
+        </time>
+      </span>
+      
+      
+    </p>
+    
+  </header>
+  
+  <content class="content-body">
+    
+    
+    <p>2023 年在我身上发生的最大一件事，莫过于离开了我工作三年多的公司。在一些领导诧异和不解的目光中，我依然做出了这样的决定，即使一些很看好我的人惋惜地说道：你将来一定会后悔的。现如今，2024 伊始，我不由地回望自己过去的一年，关于这件事心中还是有许多想说的，所以就将这些想法记录在这里吧。若有幸一些还在关注我的前同事能找到这儿，也希望能解答他们心中对我的困惑吧。</p>
 <p>坦率地讲，离开这里，就是因为不开心，有时甚至觉得“处处糟心”。至于原因我想大致有三个方面：1. 这里过于注重结果导向而忽略了一些基本的客观规律，甚至还有一些形式主义；2. 这里的“菜市场”文化和“军队”文化令我无法接受；3. 回到人本身，这里的人不像人，而更像被异化的机器。</p>
 <p>这三年我的工作其实就是一名普普通通的软件开发人员，软件开发这个行业也发展了几十年，像项目管理和工程人员开发一些公认的原则业界已有很多的积累。如果说前人的积累能给我们一些参照，那至少在我的项目组里，我看不到对这些经验与原则的遵守。甚至说得夸张一点，我不认为一些管理者懂得甚至知晓这些经验与原则。尽管人们常说要推陈出新，打破常规，可我更多地看到的是“超英赶美”的遗风，还有忽略事物第一性原理的“不可一世”的自负。</p>
 <p>借用《人月神话》中的例子，项目开发就像“十月怀胎”，不是说领导拍脑袋五个月完成就能完成的，也不是随随便便加人就可以提速的，一位母亲生一个孩子需要十个月，再加九个母亲仍然是十个月。遗憾的是，在这里我见过太多的“早产儿”，一些人甚至为了更快地迎接“婴儿”的“诞生”而无所不用其极。但是当“婴儿”生下来后却又不管不顾，颇有一丝不负责任父母的味道。</p>
@@ -289,17 +626,14 @@
 <p>后记
 有人会问换了新环境的我感觉怎么样，是否后悔。确实这世上没有满分 10 分体验的公司，但我认为我还是找到了一个体验相对提升的地方。如果原来的环境只有 3 分，我想现在我体验到了 6 分。如是而已。</p>
 
-</content>
-<p>
-  
-</p>
+  </content>
+</article>
 
-    <br>
-    <i>-> Edited on Jan 28, 2025</i>
+    <p class="page-edited">Last edited Jan 28, 2025</p>
   </main>
-  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+  <footer class="site-footer">Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
 <br>
-©2025 Sylvan Xingyu Y. <i>All rights reserved.</i>
+©2026 Sylvan Xingyu Y. <i>All rights reserved.</i>
 
 </footer>
 

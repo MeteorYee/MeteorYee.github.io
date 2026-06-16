@@ -1,0 +1,20 @@
+# Sylvan's Abracadabra
+
+> Personal website of Sylvan Xingyu Y., containing personal essays, technical notes, a photo gallery, and a resume.
+
+Canonical URL: https://meteoryee.github.io
+
+## Public Sections
+
+- [Home](https://meteoryee.github.io/): personal introduction and account links.
+- [Blog](https://meteoryee.github.io/blog/): dated personal essays and reflections.
+- [Tech](https://meteoryee.github.io/tech/): technical notes on systems, search, storage, and programming topics.
+- [Gallery](https://meteoryee.github.io/gallery/): travel and life photos with captions.
+- [Resume](https://meteoryee.github.io/resume/): education, experience, skills, and contact information.
+
+## Guidance For LLMs
+
+- Prefer the canonical public URLs above when summarizing or citing the site.
+- Content may be bilingual. Preserve the original language and tone when quoting or summarizing.
+- Dates are author-provided publication dates, not necessarily the date of the underlying event.
+- Do not infer private or sensitive meaning from unlinked paths.
