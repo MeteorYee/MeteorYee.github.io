@@ -6,49 +6,30 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="shortcut icon" href="https://meteoryee.github.io/images/favicon.png" />
-<title>Gallery | Sylvan&#39;s Abracadabra</title>
-<meta name="title" content="Gallery" />
-<meta name="description" content="
-  
-    
-  
-  
-    Ippodo Tea
-    Kyoto, Japan, 2025/10/02
-    The best ever Matcha tea I tried in Kyoto, but next time, maybe not XD
-  
+<title>SGLang | Sylvan&#39;s Abracadabra</title>
+<meta name="title" content="SGLang" />
+<meta name="description" content="创新点
+sglang 推理引擎很大的一个创新点就是引入了 radix tree，这个结构相比 prefix hash table 的好处是：
 
+更细粒度的匹配。因为 radix tree 按照 token 粒度索引，因此在匹配时可以做到尽可能地最大匹配。这相对于类似于 paged attention 成 block 的设计来说，可以做到更大程度复用 kvcache。
+拥有了树结构之后，父子节点，共同祖先的关系就显而易见，那这样连续的共同祖先节点就可以压缩成一个节点存储，对多轮请求的 fork 也可以天然支持，因为这等价于一个节点的分裂操作。
+有利于指导淘汰策略，比如每次都是在所有叶子节点中考虑淘汰谁，这样可以使得公共祖先尽可能地被保留，确保 kvcache 被最大程度复用。
+有利于指导调度策略，比如那些拥有最长公共前缀的请求可以被优先调度。当然如何防止那些最长公共前缀短的请求，也是 future work。
 
-
-  
-    
-  
-  
-    Shibuya Sky
-    Tokyo, Japan, 2024/10/02
-    Seeing Tokyo Tower on Shibuya Sky. Guess who was sharing the stunning view with me at that moment? :)
-  
-
-
-
-  
-    
-  
-  
-    Victoria Harbour
-    Hong Kong, China, 2023/05/01
-    HK’s Symphony of Lights was on. However, it was not the show itself that made the night memorable, but the friends around me and the breeze on my face." />
+进程架构
+sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动的 http server 主进程，其中有个 TokenizerManager 的角色，负责响应请求以及 tokenization，之后会把请求通过 ZMQ 传递给 Scheduler 进程，这是核心推理逻辑运行的模块。Scheduler 会根据配置的并行度，比如 tp_size, dp_size 和 pp_size 来 fork 多个子进程，tp 通常是绑定到不同的 GPU 上，pp 是模型层次之间的划分，通过流水线来实现并发，dp 等于多个 replica，每个 dp worker 有一份完整的模型权重，当 dp_size &gt; 1 时，首先会 fork 出一个 DataParallelController 子进程，然后再由 DataParallelController fork 出多个 dp worker。当推理任务执行完后，结果会由 DeTokenizerManager 由 token-id 转为实际的 text。最后，统一交给 TokenizerManager 所在主进程响应用户请求。" />
 <meta name="keywords" content="" />
 
 
-<meta property="og:url" content="https://meteoryee.github.io/gallery/">
+<meta property="og:url" content="https://meteoryee.github.io/tech/sglang/">
 	<meta property="og:site_name" content="Sylvan&#39;s Abracadabra">
-	<meta property="og:title" content="Gallery">
-	<meta property="og:description" content="Ippodo Tea Kyoto, Japan, 2025/10/02 The best ever Matcha tea I tried in Kyoto, but next time, maybe not XD
-Shibuya Sky Tokyo, Japan, 2024/10/02 Seeing Tokyo Tower on Shibuya Sky. Guess who was sharing the stunning view with me at that moment? :)
-Victoria Harbour Hong Kong, China, 2023/05/01 HK’s Symphony of Lights was on. However, it was not the show itself that made the night memorable, but the friends around me and the breeze on my face.">
+	<meta property="og:title" content="SGLang">
+	<meta property="og:description" content="创新点 sglang 推理引擎很大的一个创新点就是引入了 radix tree，这个结构相比 prefix hash table 的好处是：
+更细粒度的匹配。因为 radix tree 按照 token 粒度索引，因此在匹配时可以做到尽可能地最大匹配。这相对于类似于 paged attention 成 block 的设计来说，可以做到更大程度复用 kvcache。 拥有了树结构之后，父子节点，共同祖先的关系就显而易见，那这样连续的共同祖先节点就可以压缩成一个节点存储，对多轮请求的 fork 也可以天然支持，因为这等价于一个节点的分裂操作。 有利于指导淘汰策略，比如每次都是在所有叶子节点中考虑淘汰谁，这样可以使得公共祖先尽可能地被保留，确保 kvcache 被最大程度复用。 有利于指导调度策略，比如那些拥有最长公共前缀的请求可以被优先调度。当然如何防止那些最长公共前缀短的请求，也是 future work。 进程架构 sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动的 http server 主进程，其中有个 TokenizerManager 的角色，负责响应请求以及 tokenization，之后会把请求通过 ZMQ 传递给 Scheduler 进程，这是核心推理逻辑运行的模块。Scheduler 会根据配置的并行度，比如 tp_size, dp_size 和 pp_size 来 fork 多个子进程，tp 通常是绑定到不同的 GPU 上，pp 是模型层次之间的划分，通过流水线来实现并发，dp 等于多个 replica，每个 dp worker 有一份完整的模型权重，当 dp_size &gt; 1 时，首先会 fork 出一个 DataParallelController 子进程，然后再由 DataParallelController fork 出多个 dp worker。当推理任务执行完后，结果会由 DeTokenizerManager 由 token-id 转为实际的 text。最后，统一交给 TokenizerManager 所在主进程响应用户请求。">
 	<meta property="og:locale" content="en_US">
 	<meta property="og:type" content="article">
+		<meta property="article:section" content="tech">
+		<meta property="article:published_time" content="2026-06-25T00:00:00+00:00">
 		<meta property="article:modified_time" content="2026-06-25T20:02:02+08:00">
 		<meta property="og:image" content="https://meteoryee.github.io/images/share.png">
 
@@ -57,20 +38,19 @@ Victoria Harbour Hong Kong, China, 2023/05/01 HK’s Symphony of Lights was on. 
 
 	<meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:image" content="https://meteoryee.github.io/images/share.png">
-	<meta name="twitter:title" content="Gallery">
-	<meta name="twitter:description" content="Ippodo Tea Kyoto, Japan, 2025/10/02 The best ever Matcha tea I tried in Kyoto, but next time, maybe not XD
-Shibuya Sky Tokyo, Japan, 2024/10/02 Seeing Tokyo Tower on Shibuya Sky. Guess who was sharing the stunning view with me at that moment? :)
-Victoria Harbour Hong Kong, China, 2023/05/01 HK’s Symphony of Lights was on. However, it was not the show itself that made the night memorable, but the friends around me and the breeze on my face.">
+	<meta name="twitter:title" content="SGLang">
+	<meta name="twitter:description" content="创新点 sglang 推理引擎很大的一个创新点就是引入了 radix tree，这个结构相比 prefix hash table 的好处是：
+更细粒度的匹配。因为 radix tree 按照 token 粒度索引，因此在匹配时可以做到尽可能地最大匹配。这相对于类似于 paged attention 成 block 的设计来说，可以做到更大程度复用 kvcache。 拥有了树结构之后，父子节点，共同祖先的关系就显而易见，那这样连续的共同祖先节点就可以压缩成一个节点存储，对多轮请求的 fork 也可以天然支持，因为这等价于一个节点的分裂操作。 有利于指导淘汰策略，比如每次都是在所有叶子节点中考虑淘汰谁，这样可以使得公共祖先尽可能地被保留，确保 kvcache 被最大程度复用。 有利于指导调度策略，比如那些拥有最长公共前缀的请求可以被优先调度。当然如何防止那些最长公共前缀短的请求，也是 future work。 进程架构 sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动的 http server 主进程，其中有个 TokenizerManager 的角色，负责响应请求以及 tokenization，之后会把请求通过 ZMQ 传递给 Scheduler 进程，这是核心推理逻辑运行的模块。Scheduler 会根据配置的并行度，比如 tp_size, dp_size 和 pp_size 来 fork 多个子进程，tp 通常是绑定到不同的 GPU 上，pp 是模型层次之间的划分，通过流水线来实现并发，dp 等于多个 replica，每个 dp worker 有一份完整的模型权重，当 dp_size &gt; 1 时，首先会 fork 出一个 DataParallelController 子进程，然后再由 DataParallelController fork 出多个 dp worker。当推理任务执行完后，结果会由 DeTokenizerManager 由 token-id 转为实际的 text。最后，统一交给 TokenizerManager 所在主进程响应用户请求。">
 
 
 
 
-	<meta itemprop="name" content="Gallery">
-	<meta itemprop="description" content="Ippodo Tea Kyoto, Japan, 2025/10/02 The best ever Matcha tea I tried in Kyoto, but next time, maybe not XD
-Shibuya Sky Tokyo, Japan, 2024/10/02 Seeing Tokyo Tower on Shibuya Sky. Guess who was sharing the stunning view with me at that moment? :)
-Victoria Harbour Hong Kong, China, 2023/05/01 HK’s Symphony of Lights was on. However, it was not the show itself that made the night memorable, but the friends around me and the breeze on my face.">
+	<meta itemprop="name" content="SGLang">
+	<meta itemprop="description" content="创新点 sglang 推理引擎很大的一个创新点就是引入了 radix tree，这个结构相比 prefix hash table 的好处是：
+更细粒度的匹配。因为 radix tree 按照 token 粒度索引，因此在匹配时可以做到尽可能地最大匹配。这相对于类似于 paged attention 成 block 的设计来说，可以做到更大程度复用 kvcache。 拥有了树结构之后，父子节点，共同祖先的关系就显而易见，那这样连续的共同祖先节点就可以压缩成一个节点存储，对多轮请求的 fork 也可以天然支持，因为这等价于一个节点的分裂操作。 有利于指导淘汰策略，比如每次都是在所有叶子节点中考虑淘汰谁，这样可以使得公共祖先尽可能地被保留，确保 kvcache 被最大程度复用。 有利于指导调度策略，比如那些拥有最长公共前缀的请求可以被优先调度。当然如何防止那些最长公共前缀短的请求，也是 future work。 进程架构 sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动的 http server 主进程，其中有个 TokenizerManager 的角色，负责响应请求以及 tokenization，之后会把请求通过 ZMQ 传递给 Scheduler 进程，这是核心推理逻辑运行的模块。Scheduler 会根据配置的并行度，比如 tp_size, dp_size 和 pp_size 来 fork 多个子进程，tp 通常是绑定到不同的 GPU 上，pp 是模型层次之间的划分，通过流水线来实现并发，dp 等于多个 replica，每个 dp worker 有一份完整的模型权重，当 dp_size &gt; 1 时，首先会 fork 出一个 DataParallelController 子进程，然后再由 DataParallelController fork 出多个 dp worker。当推理任务执行完后，结果会由 DeTokenizerManager 由 token-id 转为实际的 text。最后，统一交给 TokenizerManager 所在主进程响应用户请求。">
+	<meta itemprop="datePublished" content="2026-06-25T00:00:00+00:00">
 	<meta itemprop="dateModified" content="2026-06-25T20:02:02+08:00">
-	<meta itemprop="wordCount" content="266">
+	<meta itemprop="wordCount" content="159">
 	<meta itemprop="image" content="https://meteoryee.github.io/images/share.png">
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
@@ -722,7 +702,7 @@ Victoria Harbour Hong Kong, China, 2023/05/01 HK’s Symphony of Lights was on. 
 <nav>
 
 
-<a href="/gallery/" class="nav-link is-active" aria-current="page">Gallery</a>
+<a href="/gallery/" class="nav-link">Gallery</a>
 
 
 <a href="/hidden/" class="nav-link">Hidden</a>
@@ -731,7 +711,7 @@ Victoria Harbour Hong Kong, China, 2023/05/01 HK’s Symphony of Lights was on. 
 <a href="/resume/" class="nav-link">Résumé</a>
 
 
-<a href="/tech/" class="nav-link">Tech</a>
+<a href="/tech/" class="nav-link is-active" aria-current="page">Tech</a>
 
 
 
@@ -743,125 +723,58 @@ Victoria Harbour Hong Kong, China, 2023/05/01 HK’s Symphony of Lights was on. 
 <article class="page">
   
   <header class="page-header">
-    <h1>Gallery</h1>
+    <h1>SGLang</h1>
     
     
+    
+    <p class="page-meta">
+      
+      <span>
+        Published
+        <time datetime='2026-06-25' pubdate>
+          25 Jun, 2026
+        </time>
+      </span>
+      
+      
+    </p>
     
   </header>
   
   <content class="content-body">
     
     
-    <figure class="gallery-item">
-  <button class="gallery-image-button" type="button" aria-label="Open image: Ippodo Tea">
-    <img src="/images/gallery/kyoto_2025.jpeg" alt="kyoto tea" loading="lazy" decoding="async">
-  </button>
-  <figcaption>
-    <strong>Ippodo Tea</strong>
-    <span>Kyoto, Japan, 2025/10/02</span>
-    <p>The best ever Matcha tea I tried in Kyoto, but next time, maybe not XD</p>
-  </figcaption>
-</figure>
+    <h1 id="创新点">创新点</h1>
+<p>sglang 推理引擎很大的一个创新点就是引入了 radix tree，这个结构相比 prefix hash table 的好处是：</p>
+<ol>
+<li>更细粒度的匹配。因为 radix tree 按照 token 粒度索引，因此在匹配时可以做到尽可能地最大匹配。这相对于类似于 paged attention 成 block 的设计来说，可以做到更大程度复用 kvcache。</li>
+<li>拥有了树结构之后，父子节点，共同祖先的关系就显而易见，那这样连续的共同祖先节点就可以压缩成一个节点存储，对多轮请求的 fork 也可以天然支持，因为这等价于一个节点的分裂操作。</li>
+<li>有利于指导淘汰策略，比如每次都是在所有叶子节点中考虑淘汰谁，这样可以使得公共祖先尽可能地被保留，确保 kvcache 被最大程度复用。</li>
+<li>有利于指导调度策略，比如那些拥有最长公共前缀的请求可以被优先调度。当然如何防止那些最长公共前缀短的请求，也是 future work。</li>
+</ol>
+<h1 id="进程架构">进程架构</h1>
+<p>sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动的 http server 主进程，其中有个 TokenizerManager 的角色，负责响应请求以及 tokenization，之后会把请求通过 ZMQ 传递给 Scheduler 进程，这是核心推理逻辑运行的模块。Scheduler 会根据配置的并行度，比如 tp_size, dp_size 和 pp_size 来 fork 多个子进程，tp 通常是绑定到不同的 GPU 上，pp 是模型层次之间的划分，通过流水线来实现并发，dp 等于多个 replica，每个 dp worker 有一份完整的模型权重，当 dp_size &gt; 1 时，首先会 fork 出一个 DataParallelController 子进程，然后再由 DataParallelController fork 出多个 dp worker。当推理任务执行完后，结果会由 DeTokenizerManager 由 token-id 转为实际的 text。最后，统一交给 TokenizerManager 所在主进程响应用户请求。</p>
+<figure class="mermaid-figure" role="button" tabindex="0" aria-label="Open diagram">
+  <div class="mermaid">
+  sequenceDiagram
+  participant Client as HTTP client
+  participant HTTP as HTTP server process
+  participant Scheduler as Scheduler process(es)
+  participant Detok as Detokenizer process
 
-<figure class="gallery-item">
-  <button class="gallery-image-button" type="button" aria-label="Open image: Shibuya Sky">
-    <img src="/images/gallery/shibuya_sky.jpeg" alt="shibuya sky" loading="lazy" decoding="async">
-  </button>
-  <figcaption>
-    <strong>Shibuya Sky</strong>
-    <span>Tokyo, Japan, 2024/10/02</span>
-    <p>Seeing Tokyo Tower on Shibuya Sky. Guess who was sharing the stunning view with me at that moment? :)</p>
-  </figcaption>
+  Client-&gt;&gt;HTTP: request
+  HTTP-&gt;&gt;HTTP: FastAPI / OpenAI adapter / TokenizerManager
+  HTTP-&gt;&gt;HTTP: tokenize, maintain rid_to_state
+  HTTP-&gt;&gt;Scheduler: ZMQ PUSH TokenizedGenerateReqInput
+  Scheduler-&gt;&gt;Scheduler: Scheduler -&gt; TpModelWorker -&gt; ModelRunner
+  Scheduler-&gt;&gt;Scheduler: model.forward + attention + sampler
+  Scheduler-&gt;&gt;Detok: ZMQ PUSH BatchTokenIDOutput
+  Detok-&gt;&gt;Detok: token ids -&gt; text
+  Detok-&gt;&gt;HTTP: ZMQ PUSH BatchStrOutput
+  HTTP-&gt;&gt;HTTP: handle_loop wakes HTTP coroutine
+  HTTP--&gt;&gt;Client: streaming chunk or JSON
+  </div>
 </figure>
-
-<figure class="gallery-item">
-  <button class="gallery-image-button" type="button" aria-label="Open image: Victoria Harbour">
-    <img src="/images/gallery/hk_victoria_harbour.jpg" alt="hk harbour" loading="lazy" decoding="async">
-  </button>
-  <figcaption>
-    <strong>Victoria Harbour</strong>
-    <span>Hong Kong, China, 2023/05/01</span>
-    <p>HK’s Symphony of Lights was on. However, it was not the show itself that made the night memorable, but the friends around me and the breeze on my face.</p>
-  </figcaption>
-</figure>
-
-<figure class="gallery-item">
-  <button class="gallery-image-button" type="button" aria-label="Open image: 松山湖">
-    <img src="/images/gallery/dg_songshan_lake.jpg" alt="dg songshan lake" loading="lazy" decoding="async">
-  </button>
-  <figcaption>
-    <strong>松山湖</strong>
-    <span>(Songshan Lake), Dongguan, Guangdong, China, 2022/07/13</span>
-    <p>It was a random sunny day in a hot summer, the peaceful lake made me forget all the annoying things from work at that moment.</p>
-  </figcaption>
-</figure>
-
-<figure class="gallery-item">
-  <button class="gallery-image-button" type="button" aria-label="Open image: 圆明园">
-    <img src="/images/gallery/bj_yuanmingyuan.jpg" alt="yuanmingyuan" loading="lazy" decoding="async">
-  </button>
-  <figcaption>
-    <strong>圆明园</strong>
-    <span>(Yuanmingyuan Park), 九州清晏, Haidian District, Beijing, China, 2020/05/24</span>
-    <p>This perfect mirroring of the scene suddenly caught my eye while I was enjoying the serenity of the secret corner in the famous park.</p>
-  </figcaption>
-</figure>
-
-<figure class="gallery-item">
-  <button class="gallery-image-button" type="button" aria-label="Open image: Desert Flower">
-    <img src="/images/gallery/desert_flower.jpg" alt="desert flower" loading="lazy" decoding="async">
-  </button>
-  <figcaption>
-    <strong>Desert Flower</strong>
-    <span>Grand Canyon National Park, Arizona, USA, 2019/05/17</span>
-    <p>Even though grew up in the barrenest soil, it still gave the world its most beautiful blossom.</p>
-  </figcaption>
-</figure>
-
-<figure class="gallery-item">
-  <button class="gallery-image-button" type="button" aria-label="Open image: Lake Tahoe">
-    <img src="/images/gallery/lake_tahoe.jpg" alt="lake tahoe" loading="lazy" decoding="async">
-  </button>
-  <figcaption>
-    <strong>Lake Tahoe</strong>
-    <span>South Lake Tahoe, California, USA, 2018/03/11</span>
-    <p>It was a peaceful morning, although I was sleep deprived due to one hour stolen by the spring time.</p>
-  </figcaption>
-</figure>
-
-<figure class="gallery-item">
-  <button class="gallery-image-button" type="button" aria-label="Open image: Sunrise of Lovers Cove">
-    <img src="/images/gallery/catalina_island.jpg" alt="lovers cove" loading="lazy" decoding="async">
-  </button>
-  <figcaption>
-    <strong>Sunrise of Lovers Cove</strong>
-    <span>Santa Catalina Island, California, USA, 2017/12/12</span>
-    <p>It almost killed me getting up early that day, but everything was worthwhile.</p>
-  </figcaption>
-</figure>
-
-<figure class="gallery-item">
-  <button class="gallery-image-button" type="button" aria-label="Open image: The Night of Ellendale Place">
-    <img src="/images/gallery/ellendale_night.jpg" alt="ellendale night" loading="lazy" decoding="async">
-  </button>
-  <figcaption>
-    <strong>The Night of Ellendale Place</strong>
-    <span>Los Angeles, California, USA, 2017/10/22</span>
-    <p>The silent night was approaching, but I still couldn’t see my future clearly at that time.</p>
-  </figcaption>
-</figure>
-
-<figure class="gallery-item">
-  <button class="gallery-image-button" type="button" aria-label="Open image: 挂壁公路">
-    <img src="/images/gallery/guabi_road.jpg" alt="guabi road" loading="lazy" decoding="async">
-  </button>
-  <figcaption>
-    <strong>挂壁公路</strong>
-    <span>(Guabi Gonglu), Pingshun county, Shanxi, China, 2017/07/22</span>
-    <p>Had never realized there was such a stunning view in my hometown.</p>
-  </figcaption>
-</figure>
-
 
   </content>
 </article>
@@ -928,6 +841,33 @@ Victoria Harbour Hong Kong, China, 2023/05/01 HK’s Symphony of Lights was on. 
       if (caption) preview.appendChild(caption);
 
       mediaDialog.openNode(preview);
+    });
+  });
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "default",
+  });
+
+  await mermaid.run({
+    querySelector: ".mermaid",
+  });
+
+  const figures = document.querySelectorAll(".mermaid-figure");
+  const openFigure = (figure) => {
+    const renderedDiagram = figure.querySelector(".mermaid");
+    if (!renderedDiagram) return;
+    mediaDialog.openHtml(`<div class="media-dialog-mermaid">${renderedDiagram.innerHTML}</div>`);
+  };
+
+  figures.forEach((figure) => {
+    figure.addEventListener("click", () => openFigure(figure));
+    figure.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openFigure(figure);
+      }
     });
   });
 </script>
