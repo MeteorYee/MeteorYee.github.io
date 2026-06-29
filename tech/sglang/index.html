@@ -30,7 +30,7 @@ sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动
 	<meta property="og:type" content="article">
 		<meta property="article:section" content="tech">
 		<meta property="article:published_time" content="2026-06-25T00:00:00+00:00">
-		<meta property="article:modified_time" content="2026-06-25T20:02:02+08:00">
+		<meta property="article:modified_time" content="2026-06-29T15:50:38+08:00">
 		<meta property="og:image" content="https://meteoryee.github.io/images/share.png">
 
 
@@ -49,8 +49,8 @@ sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动
 	<meta itemprop="description" content="创新点 sglang 推理引擎很大的一个创新点就是引入了 radix tree，这个结构相比 prefix hash table 的好处是：
 更细粒度的匹配。因为 radix tree 按照 token 粒度索引，因此在匹配时可以做到尽可能地最大匹配。这相对于类似于 paged attention 成 block 的设计来说，可以做到更大程度复用 kvcache。 拥有了树结构之后，父子节点，共同祖先的关系就显而易见，那这样连续的共同祖先节点就可以压缩成一个节点存储，对多轮请求的 fork 也可以天然支持，因为这等价于一个节点的分裂操作。 有利于指导淘汰策略，比如每次都是在所有叶子节点中考虑淘汰谁，这样可以使得公共祖先尽可能地被保留，确保 kvcache 被最大程度复用。 有利于指导调度策略，比如那些拥有最长公共前缀的请求可以被优先调度。当然如何防止那些最长公共前缀短的请求，也是 future work。 进程架构 sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动的 http server 主进程，其中有个 TokenizerManager 的角色，负责响应请求以及 tokenization，之后会把请求通过 ZMQ 传递给 Scheduler 进程，这是核心推理逻辑运行的模块。Scheduler 会根据配置的并行度，比如 tp_size, dp_size 和 pp_size 来 fork 多个子进程，tp 通常是绑定到不同的 GPU 上，pp 是模型层次之间的划分，通过流水线来实现并发，dp 等于多个 replica，每个 dp worker 有一份完整的模型权重，当 dp_size &gt; 1 时，首先会 fork 出一个 DataParallelController 子进程，然后再由 DataParallelController fork 出多个 dp worker。当推理任务执行完后，结果会由 DeTokenizerManager 由 token-id 转为实际的 text。最后，统一交给 TokenizerManager 所在主进程响应用户请求。">
 	<meta itemprop="datePublished" content="2026-06-25T00:00:00+00:00">
-	<meta itemprop="dateModified" content="2026-06-25T20:02:02+08:00">
-	<meta itemprop="wordCount" content="159">
+	<meta itemprop="dateModified" content="2026-06-29T15:50:38+08:00">
+	<meta itemprop="wordCount" content="586">
 	<meta itemprop="image" content="https://meteoryee.github.io/images/share.png">
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
@@ -317,6 +317,25 @@ sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动
     margin-right: auto;
   }
 
+  .content-body p:has(> .content-image-button:only-child) {
+    margin: 0;
+  }
+
+  .content-image-button {
+    display: block;
+    width: 100%;
+    margin: 1.6rem 0 1rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: zoom-in;
+  }
+
+  .content-image-button img {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
   code {
     font-family:
       ui-monospace,
@@ -387,6 +406,27 @@ sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动
     color: var(--text);
   }
 
+  .media-dialog[data-media-type="zoom"] {
+    --viewer-top: max(44px, calc(env(safe-area-inset-top) + 14px));
+    --viewer-right: max(12px, env(safe-area-inset-right));
+    --viewer-bottom: max(12px, env(safe-area-inset-bottom));
+    --viewer-left: max(12px, env(safe-area-inset-left));
+
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding-top: var(--viewer-top);
+    padding-right: var(--viewer-right);
+    padding-bottom: var(--viewer-bottom);
+    padding-left: var(--viewer-left);
+    border: 0;
+    border-radius: 0;
+    background: rgba(15, 17, 16, 0.96);
+  }
+
   .media-dialog::backdrop {
     background: rgba(23, 27, 25, 0.55);
   }
@@ -405,9 +445,25 @@ sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动
     cursor: pointer;
   }
 
+  .media-dialog[data-media-type="zoom"] .media-dialog-close {
+    top: max(0.55rem, env(safe-area-inset-top));
+    right: max(0.55rem, env(safe-area-inset-right));
+    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
+
   .media-dialog-body {
     overflow: auto;
     text-align: center;
+  }
+
+  .media-dialog[data-media-type="zoom"] .media-dialog-body {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    overscroll-behavior: contain;
   }
 
   .media-dialog-mermaid svg {
@@ -417,27 +473,122 @@ sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动
     height: auto;
   }
 
-  .media-dialog-figure {
+  .media-image-viewer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .media-image-stage {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    touch-action: none;
+    cursor: zoom-in;
+  }
+
+  .media-image-stage.is-draggable {
+    cursor: grab;
+  }
+
+  .media-image-stage.is-dragging {
+    cursor: grabbing;
+  }
+
+  .media-image-stage:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.72);
+    outline-offset: -4px;
+    border-radius: 4px;
+  }
+
+  .media-zoom-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
     margin: 0;
+    transform-origin: center;
+    user-select: none;
+    will-change: transform;
+    -webkit-user-drag: none;
   }
 
-  .media-dialog-figure img {
-    max-width: 100%;
-    max-height: calc(100vh - 9rem);
-    margin: 0 auto;
-    border: 1px solid var(--border);
-    border-radius: 6px;
+  .media-dialog-image {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    object-fit: fill;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .media-zoom-content .media-dialog-mermaid {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 4px;
     background: var(--surface);
-    object-fit: contain;
   }
 
-  .media-dialog-figure figcaption {
-    max-width: 760px;
-    margin: 0.85rem auto 0;
-    color: var(--muted);
-    font-size: 0.95rem;
-    line-height: 1.55;
-    text-align: left;
+  .media-zoom-content .media-dialog-mermaid svg {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0;
+    max-width: none !important;
+  }
+
+  .media-image-controls {
+    position: absolute;
+    left: 50%;
+    bottom: max(0.65rem, env(safe-area-inset-bottom));
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-width: 0;
+    padding: 0.3rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    background: rgba(20, 23, 22, 0.82);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    transform: translateX(-50%);
+  }
+
+  .media-zoom-button {
+    display: grid;
+    place-items: center;
+    min-width: 2.35rem;
+    height: 2.35rem;
+    padding: 0 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font: inherit;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .media-zoom-button:hover {
+    background: rgba(255, 255, 255, 0.17);
+  }
+
+  .media-zoom-button:disabled {
+    cursor: default;
+    opacity: 0.42;
+  }
+
+  .media-zoom-level {
+    min-width: 3.3rem;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 0.86rem;
+    line-height: 1;
+    text-align: center;
   }
 
   div.highlight {
@@ -689,6 +840,30 @@ sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动
     .media-dialog-mermaid svg {
       min-width: 760px;
     }
+
+    .media-dialog[data-media-type="zoom"] {
+      --viewer-top: max(48px, calc(env(safe-area-inset-top) + 12px));
+      --viewer-right: max(8px, env(safe-area-inset-right));
+      --viewer-bottom: max(8px, env(safe-area-inset-bottom));
+      --viewer-left: max(8px, env(safe-area-inset-left));
+    }
+
+    .media-image-controls {
+      gap: 0.25rem;
+      width: max-content;
+      max-width: calc(100vw - 20px);
+    }
+
+    .media-zoom-button {
+      min-width: 2.15rem;
+      height: 2.15rem;
+      padding: 0 0.5rem;
+    }
+
+    .media-zoom-level {
+      min-width: 3rem;
+      font-size: 0.8rem;
+    }
   }
 
 </style>
@@ -744,6 +919,18 @@ sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动
   <content class="content-body">
     
     
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#scheduler">Scheduler</a></li>
+    <li><a href="#kvcache">KVCache</a>
+      <ul>
+        <li><a href="#radix-tree-node-存什么">Radix Tree Node 存什么</a></li>
+        <li><a href="#请求命中路径">请求命中路径</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    
     <h1 id="创新点">创新点</h1>
 <p>sglang 推理引擎很大的一个创新点就是引入了 radix tree，这个结构相比 prefix hash table 的好处是：</p>
 <ol>
@@ -775,11 +962,149 @@ sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动
   HTTP--&gt;&gt;Client: streaming chunk or JSON
   </div>
 </figure>
+<h2 id="scheduler">Scheduler</h2>
+<p>sglang 调度粒度是以 batch 进行的，batch 的大小是通过 max_running_requests 参数设置的，也就是每一轮允许同时处理的最大请求数量。</p>
+<p>batch 的概念分为两种一个是 ScheduleBatch，一个是 ForwardBatch。ScheduleBatch 主要负责调度相关的信息，如用户请求状态，kvcache 管理，采样配置？logprobs?。ForwardBatch 主要负责模型推理相关的信息，如模型输入，模型输出，attention，sampler。ForwardBatch 通过 ScheduleBatch 中提供的信息进行初始化。Prefill 阶段每个请求的 input_ids 长度不尽相同，运算时会 flatten 成一个长序列，attention 运算时会 mask 掉请求边界之外的输入。Decode 阶段 running batch 中每个请求 token by token 产出，尽管每个请求 forward 计算时所需求的 kvcache 数量和上下文长度不同。</p>
+<p>todo:
+forward 计算时，不同请求 batch 怎么排布，如何跟 GPU 交互，这些需要再学习一下。</p>
+<h2 id="kvcache">KVCache</h2>
+<figure class="mermaid-figure" role="button" tabindex="0" aria-label="Open diagram">
+  <div class="mermaid">
+  flowchart TD
+    Req[&#34;Req / Scheduler&#34;] --&gt; Match[&#34;Radix match_prefix()&#34;]
+    Match --&gt; Node[&#34;TreeNode / UnifiedTreeNode&#34;]
+
+    subgraph Tree[&#34;Radix Tree Metadata&#34;]
+        Node
+        K[&#34;key: RadixKey&lt;br/&gt;压缩边上的 token_ids + extra_key&#34;]
+        V[&#34;value&lt;br/&gt;L1 GPU KV slot indices&#34;]
+        HV[&#34;host_value&lt;br/&gt;L2 host KV slot indices&#34;]
+        H[&#34;hash_value&lt;br/&gt;L3 per-page storage keys&#34;]
+        Ref[&#34;lock_ref / host_ref_counter&lt;br/&gt;hit_count / priority / timestamp&#34;]
+        Node --&gt; K
+        Node --&gt; V
+        Node --&gt; HV
+        Node --&gt; H
+        Node --&gt; Ref
+    end
+
+    subgraph L1[&#34;L1: GPU memory&#34;]
+        GPUAlloc[&#34;TokenToKVPoolAllocator&#34;]
+        GPUPool[&#34;MHATokenToKVPool / MLATokenToKVPool / DSA&#34;]
+    end
+
+    subgraph L2[&#34;L2: CPU host memory&#34;]
+        HostPool[&#34;HostKVCache&lt;br/&gt;MHATokenToKVPoolHost / MLATokenToKVPoolHost&#34;]
+    end
+
+    subgraph L3[&#34;L3: storage backend&#34;]
+        Store[&#34;HiCacheStorage&lt;br/&gt;file / hf3fs / mooncake / nixl / eic / simm / aibrix&#34;]
+    end
+
+    Node -- &#34;value&#34; --&gt; GPUPool
+    Node -- &#34;host_value&#34; --&gt; HostPool
+    Node -- &#34;hash_value / prefix_keys&#34; --&gt; Store
+
+    Ctrl[&#34;HiCacheController / HybridCacheController&#34;]
+
+    Ctrl -- &#34;write(): D2H backup&#34; --&gt; HostPool
+    GPUPool -- &#34;backup_from_device_all_layer()&#34; --&gt; HostPool
+
+    Ctrl -- &#34;load(): H2D loadback&#34; --&gt; GPUPool
+    HostPool -- &#34;load_to_device_per_layer()&#34; --&gt; GPUPool
+
+    Ctrl -- &#34;write_storage(): H2L3 backup&#34; --&gt; Store
+    HostPool -- &#34;batch_set / batch_set_v1/v2&#34; --&gt; Store
+
+    Ctrl -- &#34;prefetch(): L3-&gt;H&#34; --&gt; HostPool
+    Store -- &#34;batch_exists + batch_get / v1/v2&#34; --&gt; HostPool
+
+    Req --&gt; Ctrl
+  </div>
+</figure>
+<h3 id="radix-tree-node-存什么">Radix Tree Node 存什么</h3>
+<table>
+	<thead>
+			<tr>
+					<th>字段</th>
+					<th>含义</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>key: RadixKey</code></td>
+					<td>压缩 radix 边上的 token 片段，不是完整 prefix</td>
+			</tr>
+			<tr>
+					<td><code>value</code></td>
+					<td>GPU KV pool 里的 slot indices，也就是 L1 索引</td>
+			</tr>
+			<tr>
+					<td><code>host_value</code></td>
+					<td>CPU host KV pool 里的 slot indices，也就是 L2 索引</td>
+			</tr>
+			<tr>
+					<td><code>hash_value</code></td>
+					<td>每个 page 的 storage hash key，用来访问 L3</td>
+			</tr>
+			<tr>
+					<td><code>children</code> / <code>parent</code></td>
+					<td>radix tree 结构</td>
+			</tr>
+			<tr>
+					<td><code>lock_ref</code> / <code>host_ref_counter</code></td>
+					<td>防止被 GPU/host eviction</td>
+			</tr>
+			<tr>
+					<td><code>last_access_time</code> / <code>hit_count</code> / <code>priority</code></td>
+					<td>eviction、write-through/selective 策略用</td>
+			</tr>
+			<tr>
+					<td><code>write_through_pending_id</code></td>
+					<td>异步 D2H/H2L3 写入时保护节点</td>
+			</tr>
+	</tbody>
+</table>
+<p>一个很重要的点：value 和 host_value 都不是 KV tensor 本体，只是 KV pool 的位置索引。KV 本体分别在 GPU pool 和 host pool 中。</p>
+<p>如果是 hybrid/unified cache，比如 full attention + SWA + Mamba，节点变成 UnifiedTreeNode，见 python/sglang/srt/mem_cache/unified_radix_cache.py:78。它把不同组件的数据放到 component_data 里，每个组件有 value/
+host_value/lock_ref/host_lock_ref，定义在 python/sglang/srt/mem_cache/unified_cache_components/tree_component.py:61。FULL/SWA/MAMBA 会各自构造 PoolTransfer，但整体 L1/L2/L3 抽象不变。</p>
+<h3 id="请求命中路径">请求命中路径</h3>
+<figure class="mermaid-figure" role="button" tabindex="0" aria-label="Open diagram">
+  <div class="mermaid">
+  sequenceDiagram
+    participant S as Scheduler / Req
+    participant T as HiRadixCache
+    participant C as HiCacheController
+    participant G as L1 GPU KV
+    participant H as L2 Host KV
+    participant D as L3 Storage
+
+    S-&gt;&gt;T: match_prefix(RadixKey)
+    T--&gt;&gt;S: device_indices + host_hit_length + last_node
+
+    alt prefix already in L1
+        S-&gt;&gt;G: reuse prefix_indices directly
+    else suffix exists only in L2
+        S-&gt;&gt;T: init_load_back(best_match_node, host_hit_length)
+        T-&gt;&gt;C: load(host_indices)
+        C-&gt;&gt;H: read host pages/layers
+        C-&gt;&gt;G: load_to_device_per_layer()
+        T--&gt;&gt;S: append new GPU indices
+    else suffix may exist in L3
+        S-&gt;&gt;T: prefetch_from_storage(req_id, last_host_node, new_tokens)
+        T-&gt;&gt;C: prefetch(host_indices, hash keys)
+        C-&gt;&gt;D: batch_exists + batch_get
+        D--&gt;&gt;H: fill host KV pages
+        T-&gt;&gt;T: insert host-only nodes
+        S-&gt;&gt;T: later match sees L2 hit
+    end
+  </div>
+</figure>
 
   </content>
 </article>
 
-    <p class="page-edited">Last edited Jun 25, 2026</p>
+    <p class="page-edited">Last edited Jun 29, 2026</p>
   </main>
   <footer class="site-footer">Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
 <br>
@@ -800,47 +1125,348 @@ sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动
 
     const body = dialog.querySelector(".media-dialog-body");
     const closeButton = dialog.querySelector(".media-dialog-close");
+    let cleanupCurrent = null;
 
     closeButton.addEventListener("click", () => dialog.close());
     dialog.addEventListener("click", (event) => {
       if (event.target === dialog) dialog.close();
     });
     dialog.addEventListener("close", () => {
+      if (cleanupCurrent) cleanupCurrent();
+      cleanupCurrent = null;
       body.innerHTML = "";
+      delete dialog.dataset.mediaType;
     });
 
     return {
       body,
       openHtml(html) {
         body.innerHTML = html;
+        dialog.dataset.mediaType = "default";
         dialog.showModal();
       },
-      openNode(node) {
+      openNode(node, mediaType = "default") {
         body.innerHTML = "";
+        dialog.dataset.mediaType = mediaType;
         body.appendChild(node);
         dialog.showModal();
+        cleanupCurrent = typeof node.cleanup === "function" ? node.cleanup : null;
+        if (typeof node.activate === "function") node.activate();
       },
     };
   };
 
   const mediaDialog = createMediaDialog();
 
-  document.querySelectorAll(".gallery-image-button").forEach((button) => {
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+  const readNumericAttribute = (element, name) => {
+    const value = element?.getAttribute(name) || "";
+    if (!value || value.includes("%")) return 0;
+
+    const number = Number.parseFloat(value);
+    return Number.isFinite(number) ? number : 0;
+  };
+
+  const createZoomViewer = ({ label, content, getContentSize, fitUpscaleLimit = 1, onReady }) => {
+    const viewer = document.createElement("div");
+    viewer.className = "media-image-viewer";
+    viewer.innerHTML = `
+      <div class="media-image-stage" tabindex="0"></div>
+      <div class="media-image-controls" aria-label="Zoom controls">
+        <button class="media-zoom-button" type="button" data-zoom-out aria-label="Zoom out" title="Zoom out">-</button>
+        <span class="media-zoom-level" aria-live="polite">100%</span>
+        <button class="media-zoom-button" type="button" data-zoom-reset aria-label="Reset zoom" title="Reset zoom">Fit</button>
+        <button class="media-zoom-button" type="button" data-zoom-in aria-label="Zoom in" title="Zoom in">+</button>
+      </div>
+    `;
+
+    const stage = viewer.querySelector(".media-image-stage");
+    const contentFrame = document.createElement("div");
+    const zoomOutButton = viewer.querySelector("[data-zoom-out]");
+    const zoomResetButton = viewer.querySelector("[data-zoom-reset]");
+    const zoomInButton = viewer.querySelector("[data-zoom-in]");
+    const zoomLevel = viewer.querySelector(".media-zoom-level");
+    const pointerPositions = new Map();
+
+    stage.setAttribute("aria-label", label);
+    contentFrame.className = "media-zoom-content";
+    contentFrame.appendChild(content);
+    stage.appendChild(contentFrame);
+
+    let naturalWidth = 1;
+    let naturalHeight = 1;
+    let fitScale = 1;
+    let scale = 1;
+    let panX = 0;
+    let panY = 0;
+    let dragStart = null;
+    let pinchStart = null;
+    let resizeObserver = null;
+
+    const maxScale = () => Math.max(fitScale * 12, 6);
+
+    const viewport = () => ({
+      width: Math.max(1, stage.clientWidth),
+      height: Math.max(1, stage.clientHeight),
+    });
+
+    const pointFromEvent = (event) => {
+      const rect = stage.getBoundingClientRect();
+      return {
+        x: event.clientX - rect.left - rect.width / 2,
+        y: event.clientY - rect.top - rect.height / 2,
+      };
+    };
+
+    const midpoint = (first, second) => {
+      const rect = stage.getBoundingClientRect();
+      return {
+        x: (first.clientX + second.clientX) / 2 - rect.left - rect.width / 2,
+        y: (first.clientY + second.clientY) / 2 - rect.top - rect.height / 2,
+      };
+    };
+
+    const distance = (first, second) => Math.hypot(first.clientX - second.clientX, first.clientY - second.clientY);
+
+    const clampPan = () => {
+      const { width, height } = viewport();
+      const overflowX = Math.max(0, (naturalWidth * scale - width) / 2);
+      const overflowY = Math.max(0, (naturalHeight * scale - height) / 2);
+      panX = clamp(panX, -overflowX, overflowX);
+      panY = clamp(panY, -overflowY, overflowY);
+    };
+
+    const render = () => {
+      const { width, height } = viewport();
+      const isDraggable = naturalWidth * scale > width + 1 || naturalHeight * scale > height + 1;
+
+      contentFrame.style.width = `${naturalWidth}px`;
+      contentFrame.style.height = `${naturalHeight}px`;
+      contentFrame.style.transform = `translate(-50%, -50%) translate(${panX}px, ${panY}px) scale(${scale})`;
+
+      zoomLevel.textContent = `${Math.round((scale / fitScale) * 100)}%`;
+      zoomOutButton.disabled = scale <= fitScale + 0.001;
+      zoomResetButton.disabled = Math.abs(scale - fitScale) < 0.001 && Math.abs(panX) < 0.5 && Math.abs(panY) < 0.5;
+      zoomInButton.disabled = scale >= maxScale() - 0.001;
+      stage.classList.toggle("is-draggable", isDraggable);
+    };
+
+    const setZoom = (nextScale, origin = { x: 0, y: 0 }) => {
+      const clampedScale = clamp(nextScale, fitScale, maxScale());
+      if (Math.abs(clampedScale - scale) < 0.001) return;
+
+      const ratio = clampedScale / scale;
+      panX = origin.x - ratio * (origin.x - panX);
+      panY = origin.y - ratio * (origin.y - panY);
+      scale = clampedScale;
+      clampPan();
+      render();
+    };
+
+    const resetZoom = () => {
+      scale = fitScale;
+      panX = 0;
+      panY = 0;
+      render();
+    };
+
+    const syncFit = (preserveZoom = true) => {
+      const size = getContentSize();
+      if (!size.width || !size.height) return;
+
+      const previousFit = fitScale;
+      const previousRatio = previousFit > 0 ? scale / previousFit : 1;
+      const { width, height } = viewport();
+      const upscaleLimit = typeof fitUpscaleLimit === "function" ? fitUpscaleLimit() : fitUpscaleLimit;
+
+      naturalWidth = size.width;
+      naturalHeight = size.height;
+      fitScale = Math.max(0.05, Math.min(width / naturalWidth, height / naturalHeight, upscaleLimit));
+      scale = preserveZoom ? clamp(fitScale * previousRatio, fitScale, maxScale()) : fitScale;
+      clampPan();
+      render();
+    };
+
+    const markReady = () => syncFit(false);
+
+    zoomOutButton.addEventListener("click", () => setZoom(scale / 1.25));
+    zoomResetButton.addEventListener("click", resetZoom);
+    zoomInButton.addEventListener("click", () => setZoom(scale * 1.25));
+
+    stage.addEventListener("wheel", (event) => {
+      event.preventDefault();
+      setZoom(scale * (event.deltaY < 0 ? 1.16 : 1 / 1.16), pointFromEvent(event));
+    }, { passive: false });
+
+    stage.addEventListener("dblclick", (event) => {
+      const nextScale = scale <= fitScale * 1.05 ? Math.min(fitScale * 2.5, maxScale()) : fitScale;
+      setZoom(nextScale, pointFromEvent(event));
+      if (nextScale === fitScale) resetZoom();
+    });
+
+    stage.addEventListener("keydown", (event) => {
+      if (event.key === "+" || event.key === "=") {
+        event.preventDefault();
+        setZoom(scale * 1.25);
+      } else if (event.key === "-") {
+        event.preventDefault();
+        setZoom(scale / 1.25);
+      } else if (event.key === "0") {
+        event.preventDefault();
+        resetZoom();
+      }
+    });
+
+    stage.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+
+      stage.setPointerCapture(event.pointerId);
+      pointerPositions.set(event.pointerId, { clientX: event.clientX, clientY: event.clientY });
+      stage.classList.add("is-dragging");
+
+      if (pointerPositions.size === 1) {
+        dragStart = { clientX: event.clientX, clientY: event.clientY, panX, panY };
+        pinchStart = null;
+      } else if (pointerPositions.size === 2) {
+        const points = [...pointerPositions.values()];
+        pinchStart = {
+          distance: Math.max(1, distance(points[0], points[1])),
+          center: midpoint(points[0], points[1]),
+          scale,
+          panX,
+          panY,
+        };
+        dragStart = null;
+      }
+    });
+
+    stage.addEventListener("pointermove", (event) => {
+      if (!pointerPositions.has(event.pointerId)) return;
+
+      pointerPositions.set(event.pointerId, { clientX: event.clientX, clientY: event.clientY });
+
+      if (pointerPositions.size === 2 && pinchStart) {
+        const points = [...pointerPositions.values()];
+        const currentDistance = distance(points[0], points[1]);
+        const currentCenter = midpoint(points[0], points[1]);
+        const nextScale = clamp(pinchStart.scale * (currentDistance / pinchStart.distance), fitScale, maxScale());
+        const ratio = nextScale / pinchStart.scale;
+
+        scale = nextScale;
+        panX = currentCenter.x - (pinchStart.center.x - pinchStart.panX) * ratio;
+        panY = currentCenter.y - (pinchStart.center.y - pinchStart.panY) * ratio;
+        clampPan();
+        render();
+      } else if (pointerPositions.size === 1 && dragStart) {
+        panX = dragStart.panX + event.clientX - dragStart.clientX;
+        panY = dragStart.panY + event.clientY - dragStart.clientY;
+        clampPan();
+        render();
+      }
+    });
+
+    const endPointer = (event) => {
+      if (stage.hasPointerCapture(event.pointerId)) stage.releasePointerCapture(event.pointerId);
+      pointerPositions.delete(event.pointerId);
+      pinchStart = null;
+
+      if (pointerPositions.size === 1) {
+        const point = [...pointerPositions.values()][0];
+        dragStart = { clientX: point.clientX, clientY: point.clientY, panX, panY };
+      } else {
+        dragStart = null;
+        stage.classList.remove("is-dragging");
+      }
+    };
+
+    stage.addEventListener("pointerup", endPointer);
+    stage.addEventListener("pointercancel", endPointer);
+
+    viewer.activate = () => {
+      resizeObserver = new ResizeObserver(() => syncFit(true));
+      resizeObserver.observe(stage);
+      stage.focus({ preventScroll: true });
+      if (onReady) {
+        onReady(markReady);
+      } else {
+        markReady();
+      }
+    };
+
+    viewer.cleanup = () => {
+      if (resizeObserver) resizeObserver.disconnect();
+    };
+
+    return viewer;
+  };
+
+  const createImageViewer = (sourceImage) => {
+    const previewImage = document.createElement("img");
+    const source = sourceImage.currentSrc || sourceImage.src;
+
+    previewImage.className = "media-dialog-image";
+    previewImage.alt = sourceImage.alt || "";
+    previewImage.draggable = false;
+    previewImage.src = source;
+
+    return createZoomViewer({
+      label: "Image preview",
+      content: previewImage,
+      fitUpscaleLimit: /\.svg(?:$|[?#])/i.test(source) ? 4 : 1,
+      getContentSize: () => ({
+        width: previewImage.naturalWidth,
+        height: previewImage.naturalHeight,
+      }),
+      onReady: (ready) => {
+        if (previewImage.complete && previewImage.naturalWidth) {
+          ready();
+        } else {
+          previewImage.addEventListener("load", ready, { once: true });
+        }
+      },
+    });
+  };
+
+  const createMermaidViewer = (renderedDiagram) => {
+    const mermaidContent = document.createElement("div");
+    mermaidContent.className = "media-dialog-mermaid";
+    mermaidContent.innerHTML = renderedDiagram.innerHTML;
+
+    return createZoomViewer({
+      label: "Diagram preview",
+      content: mermaidContent,
+      fitUpscaleLimit: 4,
+      getContentSize: () => {
+        const svg = mermaidContent.querySelector("svg");
+        if (!svg) {
+          const rect = mermaidContent.getBoundingClientRect();
+          return { width: rect.width, height: rect.height };
+        }
+
+        const viewBox = svg.viewBox?.baseVal;
+        let box = null;
+
+        try {
+          box = svg.getBBox();
+        } catch {
+          box = null;
+        }
+
+        return {
+          width: Math.max(1, viewBox?.width || readNumericAttribute(svg, "width") || box?.width || svg.getBoundingClientRect().width),
+          height: Math.max(1, viewBox?.height || readNumericAttribute(svg, "height") || box?.height || svg.getBoundingClientRect().height),
+        };
+      },
+    });
+  };
+
+  document.querySelectorAll(".gallery-image-button, .content-image-button").forEach((button) => {
     button.addEventListener("click", () => {
-      const item = button.closest(".gallery-item");
       const image = button.querySelector("img");
       if (!image) return;
 
-      const caption = item?.querySelector("figcaption")?.cloneNode(true);
-      const preview = document.createElement("figure");
-      preview.className = "media-dialog-figure";
-      const previewImage = document.createElement("img");
-      previewImage.src = image.currentSrc || image.src;
-      previewImage.alt = image.alt;
-      preview.appendChild(previewImage);
-      if (caption) preview.appendChild(caption);
-
-      mediaDialog.openNode(preview);
+      mediaDialog.openNode(createImageViewer(image), "zoom");
     });
   });
   import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
@@ -858,7 +1484,7 @@ sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动
   const openFigure = (figure) => {
     const renderedDiagram = figure.querySelector(".mermaid");
     if (!renderedDiagram) return;
-    mediaDialog.openHtml(`<div class="media-dialog-mermaid">${renderedDiagram.innerHTML}</div>`);
+    mediaDialog.openNode(createMermaidViewer(renderedDiagram), "zoom");
   };
 
   figures.forEach((figure) => {

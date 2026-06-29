@@ -306,6 +306,25 @@ One might ask why the heck do I call myself Sylvan. The reason sounds a little b
     margin-right: auto;
   }
 
+  .content-body p:has(> .content-image-button:only-child) {
+    margin: 0;
+  }
+
+  .content-image-button {
+    display: block;
+    width: 100%;
+    margin: 1.6rem 0 1rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: zoom-in;
+  }
+
+  .content-image-button img {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
   code {
     font-family:
       ui-monospace,
@@ -376,6 +395,27 @@ One might ask why the heck do I call myself Sylvan. The reason sounds a little b
     color: var(--text);
   }
 
+  .media-dialog[data-media-type="zoom"] {
+    --viewer-top: max(44px, calc(env(safe-area-inset-top) + 14px));
+    --viewer-right: max(12px, env(safe-area-inset-right));
+    --viewer-bottom: max(12px, env(safe-area-inset-bottom));
+    --viewer-left: max(12px, env(safe-area-inset-left));
+
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding-top: var(--viewer-top);
+    padding-right: var(--viewer-right);
+    padding-bottom: var(--viewer-bottom);
+    padding-left: var(--viewer-left);
+    border: 0;
+    border-radius: 0;
+    background: rgba(15, 17, 16, 0.96);
+  }
+
   .media-dialog::backdrop {
     background: rgba(23, 27, 25, 0.55);
   }
@@ -394,9 +434,25 @@ One might ask why the heck do I call myself Sylvan. The reason sounds a little b
     cursor: pointer;
   }
 
+  .media-dialog[data-media-type="zoom"] .media-dialog-close {
+    top: max(0.55rem, env(safe-area-inset-top));
+    right: max(0.55rem, env(safe-area-inset-right));
+    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
+
   .media-dialog-body {
     overflow: auto;
     text-align: center;
+  }
+
+  .media-dialog[data-media-type="zoom"] .media-dialog-body {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    overscroll-behavior: contain;
   }
 
   .media-dialog-mermaid svg {
@@ -406,27 +462,122 @@ One might ask why the heck do I call myself Sylvan. The reason sounds a little b
     height: auto;
   }
 
-  .media-dialog-figure {
+  .media-image-viewer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .media-image-stage {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    touch-action: none;
+    cursor: zoom-in;
+  }
+
+  .media-image-stage.is-draggable {
+    cursor: grab;
+  }
+
+  .media-image-stage.is-dragging {
+    cursor: grabbing;
+  }
+
+  .media-image-stage:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.72);
+    outline-offset: -4px;
+    border-radius: 4px;
+  }
+
+  .media-zoom-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
     margin: 0;
+    transform-origin: center;
+    user-select: none;
+    will-change: transform;
+    -webkit-user-drag: none;
   }
 
-  .media-dialog-figure img {
-    max-width: 100%;
-    max-height: calc(100vh - 9rem);
-    margin: 0 auto;
-    border: 1px solid var(--border);
-    border-radius: 6px;
+  .media-dialog-image {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    object-fit: fill;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .media-zoom-content .media-dialog-mermaid {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 4px;
     background: var(--surface);
-    object-fit: contain;
   }
 
-  .media-dialog-figure figcaption {
-    max-width: 760px;
-    margin: 0.85rem auto 0;
-    color: var(--muted);
-    font-size: 0.95rem;
-    line-height: 1.55;
-    text-align: left;
+  .media-zoom-content .media-dialog-mermaid svg {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0;
+    max-width: none !important;
+  }
+
+  .media-image-controls {
+    position: absolute;
+    left: 50%;
+    bottom: max(0.65rem, env(safe-area-inset-bottom));
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-width: 0;
+    padding: 0.3rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    background: rgba(20, 23, 22, 0.82);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    transform: translateX(-50%);
+  }
+
+  .media-zoom-button {
+    display: grid;
+    place-items: center;
+    min-width: 2.35rem;
+    height: 2.35rem;
+    padding: 0 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font: inherit;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .media-zoom-button:hover {
+    background: rgba(255, 255, 255, 0.17);
+  }
+
+  .media-zoom-button:disabled {
+    cursor: default;
+    opacity: 0.42;
+  }
+
+  .media-zoom-level {
+    min-width: 3.3rem;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 0.86rem;
+    line-height: 1;
+    text-align: center;
   }
 
   div.highlight {
@@ -678,6 +829,30 @@ One might ask why the heck do I call myself Sylvan. The reason sounds a little b
     .media-dialog-mermaid svg {
       min-width: 760px;
     }
+
+    .media-dialog[data-media-type="zoom"] {
+      --viewer-top: max(48px, calc(env(safe-area-inset-top) + 12px));
+      --viewer-right: max(8px, env(safe-area-inset-right));
+      --viewer-bottom: max(8px, env(safe-area-inset-bottom));
+      --viewer-left: max(8px, env(safe-area-inset-left));
+    }
+
+    .media-image-controls {
+      gap: 0.25rem;
+      width: max-content;
+      max-width: calc(100vw - 20px);
+    }
+
+    .media-zoom-button {
+      min-width: 2.15rem;
+      height: 2.15rem;
+      padding: 0 0.5rem;
+    }
+
+    .media-zoom-level {
+      min-width: 3rem;
+      font-size: 0.8rem;
+    }
   }
 
 </style>
@@ -709,14 +884,20 @@ One might ask why the heck do I call myself Sylvan. The reason sounds a little b
 </nav>
 </header>
   <main>
-<p class="home-updated">Last updated 2026-06-25</p>
+<p class="home-updated">Last updated 2026-06-29</p>
 <content class="content-body">
   <h1 id="who-am-i">Who Am I</h1>
 <p>Hey there, my name is Sylvan. I work as a software engineer in an ecommerce company, at Beijing, China. I am building this website only for posting my daily thoughts and my study notes of interesting technologies.</p>
-<p><img src="/images/profile-eversong-woods.jpg" alt="eversong woods"></p>
+<p><button class="content-image-button" type="button" aria-label="Open image: eversong woods">
+  <img src="/images/profile-eversong-woods.jpg" alt="eversong woods" loading="lazy" decoding="async">
+</button>
+</p>
 <p>One might ask why the heck do I call myself Sylvan. The reason sounds a little bit naive because the inspiration came from one of my favorite heroine, whose name is <a href="https://en.wikipedia.org/wiki/Sylvanas_Windrunner">Sylvanas</a>, in a video game called World of Warcraft. Originally, sylvan comes from a Latin word silva which means ‘a wood’. This is where I really admire the designers of this game in that the name Sylvanas perfectly embodies who the female elf is and where she is from. Sylvanas is a courageous elf ranger who once lived in a tranquil and spectacular forest called Eversong Woods and sacrificed her life there. I know the thought might sound crazy but I really wish I could live in such a place one day, despite that it is totally fabricated by game programmers.</p>
 <p><em>Feel free to check out my WeChat offcial account.</em></p>
-<p><img src="/images/wechat_official_account.JPG" alt="wechat"></p>
+<p><button class="content-image-button" type="button" aria-label="Open image: wechat">
+  <img src="/images/wechat_official_account.JPG" alt="wechat" loading="lazy" decoding="async">
+</button>
+</p>
 
 </content>
 
@@ -729,6 +910,363 @@ One might ask why the heck do I call myself Sylvan. The reason sounds a little b
 </footer>
 
   
+<script type="module">
+  const createMediaDialog = () => {
+    const dialog = document.createElement("dialog");
+    dialog.className = "media-dialog";
+    dialog.innerHTML = `
+      <button class="media-dialog-close" type="button" aria-label="Close preview">x</button>
+      <div class="media-dialog-body"></div>
+    `;
+    document.body.appendChild(dialog);
+
+    const body = dialog.querySelector(".media-dialog-body");
+    const closeButton = dialog.querySelector(".media-dialog-close");
+    let cleanupCurrent = null;
+
+    closeButton.addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener("close", () => {
+      if (cleanupCurrent) cleanupCurrent();
+      cleanupCurrent = null;
+      body.innerHTML = "";
+      delete dialog.dataset.mediaType;
+    });
+
+    return {
+      body,
+      openHtml(html) {
+        body.innerHTML = html;
+        dialog.dataset.mediaType = "default";
+        dialog.showModal();
+      },
+      openNode(node, mediaType = "default") {
+        body.innerHTML = "";
+        dialog.dataset.mediaType = mediaType;
+        body.appendChild(node);
+        dialog.showModal();
+        cleanupCurrent = typeof node.cleanup === "function" ? node.cleanup : null;
+        if (typeof node.activate === "function") node.activate();
+      },
+    };
+  };
+
+  const mediaDialog = createMediaDialog();
+
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+  const readNumericAttribute = (element, name) => {
+    const value = element?.getAttribute(name) || "";
+    if (!value || value.includes("%")) return 0;
+
+    const number = Number.parseFloat(value);
+    return Number.isFinite(number) ? number : 0;
+  };
+
+  const createZoomViewer = ({ label, content, getContentSize, fitUpscaleLimit = 1, onReady }) => {
+    const viewer = document.createElement("div");
+    viewer.className = "media-image-viewer";
+    viewer.innerHTML = `
+      <div class="media-image-stage" tabindex="0"></div>
+      <div class="media-image-controls" aria-label="Zoom controls">
+        <button class="media-zoom-button" type="button" data-zoom-out aria-label="Zoom out" title="Zoom out">-</button>
+        <span class="media-zoom-level" aria-live="polite">100%</span>
+        <button class="media-zoom-button" type="button" data-zoom-reset aria-label="Reset zoom" title="Reset zoom">Fit</button>
+        <button class="media-zoom-button" type="button" data-zoom-in aria-label="Zoom in" title="Zoom in">+</button>
+      </div>
+    `;
+
+    const stage = viewer.querySelector(".media-image-stage");
+    const contentFrame = document.createElement("div");
+    const zoomOutButton = viewer.querySelector("[data-zoom-out]");
+    const zoomResetButton = viewer.querySelector("[data-zoom-reset]");
+    const zoomInButton = viewer.querySelector("[data-zoom-in]");
+    const zoomLevel = viewer.querySelector(".media-zoom-level");
+    const pointerPositions = new Map();
+
+    stage.setAttribute("aria-label", label);
+    contentFrame.className = "media-zoom-content";
+    contentFrame.appendChild(content);
+    stage.appendChild(contentFrame);
+
+    let naturalWidth = 1;
+    let naturalHeight = 1;
+    let fitScale = 1;
+    let scale = 1;
+    let panX = 0;
+    let panY = 0;
+    let dragStart = null;
+    let pinchStart = null;
+    let resizeObserver = null;
+
+    const maxScale = () => Math.max(fitScale * 12, 6);
+
+    const viewport = () => ({
+      width: Math.max(1, stage.clientWidth),
+      height: Math.max(1, stage.clientHeight),
+    });
+
+    const pointFromEvent = (event) => {
+      const rect = stage.getBoundingClientRect();
+      return {
+        x: event.clientX - rect.left - rect.width / 2,
+        y: event.clientY - rect.top - rect.height / 2,
+      };
+    };
+
+    const midpoint = (first, second) => {
+      const rect = stage.getBoundingClientRect();
+      return {
+        x: (first.clientX + second.clientX) / 2 - rect.left - rect.width / 2,
+        y: (first.clientY + second.clientY) / 2 - rect.top - rect.height / 2,
+      };
+    };
+
+    const distance = (first, second) => Math.hypot(first.clientX - second.clientX, first.clientY - second.clientY);
+
+    const clampPan = () => {
+      const { width, height } = viewport();
+      const overflowX = Math.max(0, (naturalWidth * scale - width) / 2);
+      const overflowY = Math.max(0, (naturalHeight * scale - height) / 2);
+      panX = clamp(panX, -overflowX, overflowX);
+      panY = clamp(panY, -overflowY, overflowY);
+    };
+
+    const render = () => {
+      const { width, height } = viewport();
+      const isDraggable = naturalWidth * scale > width + 1 || naturalHeight * scale > height + 1;
+
+      contentFrame.style.width = `${naturalWidth}px`;
+      contentFrame.style.height = `${naturalHeight}px`;
+      contentFrame.style.transform = `translate(-50%, -50%) translate(${panX}px, ${panY}px) scale(${scale})`;
+
+      zoomLevel.textContent = `${Math.round((scale / fitScale) * 100)}%`;
+      zoomOutButton.disabled = scale <= fitScale + 0.001;
+      zoomResetButton.disabled = Math.abs(scale - fitScale) < 0.001 && Math.abs(panX) < 0.5 && Math.abs(panY) < 0.5;
+      zoomInButton.disabled = scale >= maxScale() - 0.001;
+      stage.classList.toggle("is-draggable", isDraggable);
+    };
+
+    const setZoom = (nextScale, origin = { x: 0, y: 0 }) => {
+      const clampedScale = clamp(nextScale, fitScale, maxScale());
+      if (Math.abs(clampedScale - scale) < 0.001) return;
+
+      const ratio = clampedScale / scale;
+      panX = origin.x - ratio * (origin.x - panX);
+      panY = origin.y - ratio * (origin.y - panY);
+      scale = clampedScale;
+      clampPan();
+      render();
+    };
+
+    const resetZoom = () => {
+      scale = fitScale;
+      panX = 0;
+      panY = 0;
+      render();
+    };
+
+    const syncFit = (preserveZoom = true) => {
+      const size = getContentSize();
+      if (!size.width || !size.height) return;
+
+      const previousFit = fitScale;
+      const previousRatio = previousFit > 0 ? scale / previousFit : 1;
+      const { width, height } = viewport();
+      const upscaleLimit = typeof fitUpscaleLimit === "function" ? fitUpscaleLimit() : fitUpscaleLimit;
+
+      naturalWidth = size.width;
+      naturalHeight = size.height;
+      fitScale = Math.max(0.05, Math.min(width / naturalWidth, height / naturalHeight, upscaleLimit));
+      scale = preserveZoom ? clamp(fitScale * previousRatio, fitScale, maxScale()) : fitScale;
+      clampPan();
+      render();
+    };
+
+    const markReady = () => syncFit(false);
+
+    zoomOutButton.addEventListener("click", () => setZoom(scale / 1.25));
+    zoomResetButton.addEventListener("click", resetZoom);
+    zoomInButton.addEventListener("click", () => setZoom(scale * 1.25));
+
+    stage.addEventListener("wheel", (event) => {
+      event.preventDefault();
+      setZoom(scale * (event.deltaY < 0 ? 1.16 : 1 / 1.16), pointFromEvent(event));
+    }, { passive: false });
+
+    stage.addEventListener("dblclick", (event) => {
+      const nextScale = scale <= fitScale * 1.05 ? Math.min(fitScale * 2.5, maxScale()) : fitScale;
+      setZoom(nextScale, pointFromEvent(event));
+      if (nextScale === fitScale) resetZoom();
+    });
+
+    stage.addEventListener("keydown", (event) => {
+      if (event.key === "+" || event.key === "=") {
+        event.preventDefault();
+        setZoom(scale * 1.25);
+      } else if (event.key === "-") {
+        event.preventDefault();
+        setZoom(scale / 1.25);
+      } else if (event.key === "0") {
+        event.preventDefault();
+        resetZoom();
+      }
+    });
+
+    stage.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+
+      stage.setPointerCapture(event.pointerId);
+      pointerPositions.set(event.pointerId, { clientX: event.clientX, clientY: event.clientY });
+      stage.classList.add("is-dragging");
+
+      if (pointerPositions.size === 1) {
+        dragStart = { clientX: event.clientX, clientY: event.clientY, panX, panY };
+        pinchStart = null;
+      } else if (pointerPositions.size === 2) {
+        const points = [...pointerPositions.values()];
+        pinchStart = {
+          distance: Math.max(1, distance(points[0], points[1])),
+          center: midpoint(points[0], points[1]),
+          scale,
+          panX,
+          panY,
+        };
+        dragStart = null;
+      }
+    });
+
+    stage.addEventListener("pointermove", (event) => {
+      if (!pointerPositions.has(event.pointerId)) return;
+
+      pointerPositions.set(event.pointerId, { clientX: event.clientX, clientY: event.clientY });
+
+      if (pointerPositions.size === 2 && pinchStart) {
+        const points = [...pointerPositions.values()];
+        const currentDistance = distance(points[0], points[1]);
+        const currentCenter = midpoint(points[0], points[1]);
+        const nextScale = clamp(pinchStart.scale * (currentDistance / pinchStart.distance), fitScale, maxScale());
+        const ratio = nextScale / pinchStart.scale;
+
+        scale = nextScale;
+        panX = currentCenter.x - (pinchStart.center.x - pinchStart.panX) * ratio;
+        panY = currentCenter.y - (pinchStart.center.y - pinchStart.panY) * ratio;
+        clampPan();
+        render();
+      } else if (pointerPositions.size === 1 && dragStart) {
+        panX = dragStart.panX + event.clientX - dragStart.clientX;
+        panY = dragStart.panY + event.clientY - dragStart.clientY;
+        clampPan();
+        render();
+      }
+    });
+
+    const endPointer = (event) => {
+      if (stage.hasPointerCapture(event.pointerId)) stage.releasePointerCapture(event.pointerId);
+      pointerPositions.delete(event.pointerId);
+      pinchStart = null;
+
+      if (pointerPositions.size === 1) {
+        const point = [...pointerPositions.values()][0];
+        dragStart = { clientX: point.clientX, clientY: point.clientY, panX, panY };
+      } else {
+        dragStart = null;
+        stage.classList.remove("is-dragging");
+      }
+    };
+
+    stage.addEventListener("pointerup", endPointer);
+    stage.addEventListener("pointercancel", endPointer);
+
+    viewer.activate = () => {
+      resizeObserver = new ResizeObserver(() => syncFit(true));
+      resizeObserver.observe(stage);
+      stage.focus({ preventScroll: true });
+      if (onReady) {
+        onReady(markReady);
+      } else {
+        markReady();
+      }
+    };
+
+    viewer.cleanup = () => {
+      if (resizeObserver) resizeObserver.disconnect();
+    };
+
+    return viewer;
+  };
+
+  const createImageViewer = (sourceImage) => {
+    const previewImage = document.createElement("img");
+    const source = sourceImage.currentSrc || sourceImage.src;
+
+    previewImage.className = "media-dialog-image";
+    previewImage.alt = sourceImage.alt || "";
+    previewImage.draggable = false;
+    previewImage.src = source;
+
+    return createZoomViewer({
+      label: "Image preview",
+      content: previewImage,
+      fitUpscaleLimit: /\.svg(?:$|[?#])/i.test(source) ? 4 : 1,
+      getContentSize: () => ({
+        width: previewImage.naturalWidth,
+        height: previewImage.naturalHeight,
+      }),
+      onReady: (ready) => {
+        if (previewImage.complete && previewImage.naturalWidth) {
+          ready();
+        } else {
+          previewImage.addEventListener("load", ready, { once: true });
+        }
+      },
+    });
+  };
+
+  const createMermaidViewer = (renderedDiagram) => {
+    const mermaidContent = document.createElement("div");
+    mermaidContent.className = "media-dialog-mermaid";
+    mermaidContent.innerHTML = renderedDiagram.innerHTML;
+
+    return createZoomViewer({
+      label: "Diagram preview",
+      content: mermaidContent,
+      fitUpscaleLimit: 4,
+      getContentSize: () => {
+        const svg = mermaidContent.querySelector("svg");
+        if (!svg) {
+          const rect = mermaidContent.getBoundingClientRect();
+          return { width: rect.width, height: rect.height };
+        }
+
+        const viewBox = svg.viewBox?.baseVal;
+        let box = null;
+
+        try {
+          box = svg.getBBox();
+        } catch {
+          box = null;
+        }
+
+        return {
+          width: Math.max(1, viewBox?.width || readNumericAttribute(svg, "width") || box?.width || svg.getBoundingClientRect().width),
+          height: Math.max(1, viewBox?.height || readNumericAttribute(svg, "height") || box?.height || svg.getBoundingClientRect().height),
+        };
+      },
+    });
+  };
+
+  document.querySelectorAll(".gallery-image-button, .content-image-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const image = button.querySelector("img");
+      if (!image) return;
+
+      mediaDialog.openNode(createImageViewer(image), "zoom");
+    });
+  });
+</script>
 </body>
 
 </html>
