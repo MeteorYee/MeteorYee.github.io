@@ -14,6 +14,13 @@
 		
 			<atom:link href="https://meteoryee.github.io/index.xml" rel="self" type="application/rss+xml" />
 			<item>
+				<title>DeepSeek Notes</title>
+				<link>https://meteoryee.github.io/tech/deepseek_notes/</link>
+				<pubDate>Tue, 30 Jun 2026 00:00:00 +0000</pubDate>
+				<guid>https://meteoryee.github.io/tech/deepseek_notes/</guid>
+				<description>&lt;h1 id=&#34;deepseek-notes&#34;&gt;DeepSeek Notes&lt;/h1&gt;&#xA;&lt;h2 id=&#34;attention-类型&#34;&gt;Attention 类型&lt;/h2&gt;&#xA;&lt;p&gt;首先要说明的，Deepseek 采用的是 Shared Key-Value Multi-Query Attention，即 K V 共享一个状态。它有三种 attention 种类：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;CSA (Compressed Sparse Attention)：压缩稀疏 Attention，在注意力计算时，仅选取 topk 个 KV 参与运算。topk 的选取依赖于模型训练的 csa indexer，这也是它稀疏的含义所在。该层 compress_ratio = 4, 以每 4 个token 压缩成一个候选的 kv cache entry。&lt;/li&gt;&#xA;&lt;li&gt;HCA (Highly Compressed Attention)：相比 CSA，只是压缩程度更高, compress_ratio = 128，attention 计算时仍然 attend 到全量的 kv。&lt;/li&gt;&#xA;&lt;li&gt;SWA (Sliding-Window Attention)：attention 计算时只 attend 一个固定窗口大小的 kv，而且对应的是 dense kv，不压缩。CSA, HCA 都会保留最近 window size 的 uncompressed token，作为压缩信息的补偿。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;kvcache-种类&#34;&gt;KVCache 种类&lt;/h2&gt;&#xA;&lt;p&gt;Deepseek 因为它特殊的 attention 机制，有七种 kvcache 种类。这七种 kvcache 可以分为两大类，一类是 full，一类是 SWA。full 类型则类似于经典的 full attention，query 对应之前所有的上下文的 kvcache 都会存储下来。SWA 则只保留固定窗口大小的 kvcache。&lt;/p&gt;</description>
+			</item>
+			<item>
 				<title>SGLang</title>
 				<link>https://meteoryee.github.io/tech/sglang/</link>
 				<pubDate>Thu, 25 Jun 2026 00:00:00 +0000</pubDate>

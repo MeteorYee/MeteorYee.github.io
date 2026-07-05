@@ -6,18 +6,31 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="shortcut icon" href="https://meteoryee.github.io/images/favicon.png" />
-<title>Tech | Sylvan&#39;s Abracadabra</title>
-<meta name="title" content="Tech" />
-<meta name="description" content="Hugo &#43; Bear = :heart:" />
+<title>DeepSeek Notes | Sylvan&#39;s Abracadabra</title>
+<meta name="title" content="DeepSeek Notes" />
+<meta name="description" content="DeepSeek Notes
+Attention 类型
+首先要说明的，Deepseek 采用的是 Shared Key-Value Multi-Query Attention，即 K V 共享一个状态。它有三种 attention 种类：
+
+CSA (Compressed Sparse Attention)：压缩稀疏 Attention，在注意力计算时，仅选取 topk 个 KV 参与运算。topk 的选取依赖于模型训练的 csa indexer，这也是它稀疏的含义所在。该层 compress_ratio = 4, 以每 4 个token 压缩成一个候选的 kv cache entry。
+HCA (Highly Compressed Attention)：相比 CSA，只是压缩程度更高, compress_ratio = 128，attention 计算时仍然 attend 到全量的 kv。
+SWA (Sliding-Window Attention)：attention 计算时只 attend 一个固定窗口大小的 kv，而且对应的是 dense kv，不压缩。CSA, HCA 都会保留最近 window size 的 uncompressed token，作为压缩信息的补偿。
+
+KVCache 种类
+Deepseek 因为它特殊的 attention 机制，有七种 kvcache 种类。这七种 kvcache 可以分为两大类，一类是 full，一类是 SWA。full 类型则类似于经典的 full attention，query 对应之前所有的上下文的 kvcache 都会存储下来。SWA 则只保留固定窗口大小的 kvcache。" />
 <meta name="keywords" content="" />
 
 
-<meta property="og:url" content="https://meteoryee.github.io/tech/">
+<meta property="og:url" content="https://meteoryee.github.io/tech/deepseek_notes/">
 	<meta property="og:site_name" content="Sylvan&#39;s Abracadabra">
-	<meta property="og:title" content="Tech">
-	<meta property="og:description" content="This is a page about »Tech«.">
+	<meta property="og:title" content="DeepSeek Notes">
+	<meta property="og:description" content="DeepSeek Notes Attention 类型 首先要说明的，Deepseek 采用的是 Shared Key-Value Multi-Query Attention，即 K V 共享一个状态。它有三种 attention 种类：
+CSA (Compressed Sparse Attention)：压缩稀疏 Attention，在注意力计算时，仅选取 topk 个 KV 参与运算。topk 的选取依赖于模型训练的 csa indexer，这也是它稀疏的含义所在。该层 compress_ratio = 4, 以每 4 个token 压缩成一个候选的 kv cache entry。 HCA (Highly Compressed Attention)：相比 CSA，只是压缩程度更高, compress_ratio = 128，attention 计算时仍然 attend 到全量的 kv。 SWA (Sliding-Window Attention)：attention 计算时只 attend 一个固定窗口大小的 kv，而且对应的是 dense kv，不压缩。CSA, HCA 都会保留最近 window size 的 uncompressed token，作为压缩信息的补偿。 KVCache 种类 Deepseek 因为它特殊的 attention 机制，有七种 kvcache 种类。这七种 kvcache 可以分为两大类，一类是 full，一类是 SWA。full 类型则类似于经典的 full attention，query 对应之前所有的上下文的 kvcache 都会存储下来。SWA 则只保留固定窗口大小的 kvcache。">
 	<meta property="og:locale" content="en_US">
-	<meta property="og:type" content="website">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="tech">
+		<meta property="article:published_time" content="2026-06-30T00:00:00+00:00">
+		<meta property="article:modified_time" content="2026-07-05T22:35:06+08:00">
 		<meta property="og:image" content="https://meteoryee.github.io/images/share.png">
 
 
@@ -25,21 +38,22 @@
 
 	<meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:image" content="https://meteoryee.github.io/images/share.png">
-	<meta name="twitter:title" content="Tech">
-	<meta name="twitter:description" content="This is a page about »Tech«.">
+	<meta name="twitter:title" content="DeepSeek Notes">
+	<meta name="twitter:description" content="DeepSeek Notes Attention 类型 首先要说明的，Deepseek 采用的是 Shared Key-Value Multi-Query Attention，即 K V 共享一个状态。它有三种 attention 种类：
+CSA (Compressed Sparse Attention)：压缩稀疏 Attention，在注意力计算时，仅选取 topk 个 KV 参与运算。topk 的选取依赖于模型训练的 csa indexer，这也是它稀疏的含义所在。该层 compress_ratio = 4, 以每 4 个token 压缩成一个候选的 kv cache entry。 HCA (Highly Compressed Attention)：相比 CSA，只是压缩程度更高, compress_ratio = 128，attention 计算时仍然 attend 到全量的 kv。 SWA (Sliding-Window Attention)：attention 计算时只 attend 一个固定窗口大小的 kv，而且对应的是 dense kv，不压缩。CSA, HCA 都会保留最近 window size 的 uncompressed token，作为压缩信息的补偿。 KVCache 种类 Deepseek 因为它特殊的 attention 机制，有七种 kvcache 种类。这七种 kvcache 可以分为两大类，一类是 full，一类是 SWA。full 类型则类似于经典的 full attention，query 对应之前所有的上下文的 kvcache 都会存储下来。SWA 则只保留固定窗口大小的 kvcache。">
 
 
 
 
-	<meta itemprop="name" content="Tech">
-	<meta itemprop="description" content="This is a page about »Tech«.">
-	<meta itemprop="datePublished" content="2024-11-28T00:08:21+08:00">
-	<meta itemprop="dateModified" content="2024-11-27T23:40:07+08:00">
-	<meta itemprop="wordCount" content="6">
+	<meta itemprop="name" content="DeepSeek Notes">
+	<meta itemprop="description" content="DeepSeek Notes Attention 类型 首先要说明的，Deepseek 采用的是 Shared Key-Value Multi-Query Attention，即 K V 共享一个状态。它有三种 attention 种类：
+CSA (Compressed Sparse Attention)：压缩稀疏 Attention，在注意力计算时，仅选取 topk 个 KV 参与运算。topk 的选取依赖于模型训练的 csa indexer，这也是它稀疏的含义所在。该层 compress_ratio = 4, 以每 4 个token 压缩成一个候选的 kv cache entry。 HCA (Highly Compressed Attention)：相比 CSA，只是压缩程度更高, compress_ratio = 128，attention 计算时仍然 attend 到全量的 kv。 SWA (Sliding-Window Attention)：attention 计算时只 attend 一个固定窗口大小的 kv，而且对应的是 dense kv，不压缩。CSA, HCA 都会保留最近 window size 的 uncompressed token，作为压缩信息的补偿。 KVCache 种类 Deepseek 因为它特殊的 attention 机制，有七种 kvcache 种类。这七种 kvcache 可以分为两大类，一类是 full，一类是 SWA。full 类型则类似于经典的 full attention，query 对应之前所有的上下文的 kvcache 都会存储下来。SWA 则只保留固定窗口大小的 kvcache。">
+	<meta itemprop="datePublished" content="2026-06-30T00:00:00+00:00">
+	<meta itemprop="dateModified" content="2026-07-05T22:35:06+08:00">
+	<meta itemprop="wordCount" content="263">
 	<meta itemprop="image" content="https://meteoryee.github.io/images/share.png">
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
-  <link rel="alternate" type="application/rss+xml" href="https://meteoryee.github.io/tech/index.xml" title="Sylvan's Abracadabra" />
   <style>
   :root {
     color-scheme: light dark;
@@ -881,96 +895,74 @@
 </nav>
 </header>
   <main>
-<header class="list-header">
-  <h1>Tech</h1>
+<article class="page">
   
-  <div class="list-intro"><p>This is a page about »Tech«.</p>
-</div>
-  
-</header>
-<content class="content-body">
-  
-  <ul class="blog-posts">
+  <header class="page-header">
+    <h1>DeepSeek Notes</h1>
     
-    <li>
-      <span class="archive-date">
+    
+    
+    <p class="page-meta">
+      
+      <span>
+        Published
         <time datetime='2026-06-30' pubdate>
           30 Jun, 2026
         </time>
       </span>
-      <div class="archive-body">
-        <a href="/tech/deepseek_notes/" class="list-item-link">DeepSeek Notes</a>
-        
-      </div>
-    </li>
+      
+      
+    </p>
     
-    <li>
-      <span class="archive-date">
-        <time datetime='2026-06-25' pubdate>
-          25 Jun, 2026
-        </time>
-      </span>
-      <div class="archive-body">
-        <a href="/tech/sglang/" class="list-item-link">SGLang</a>
-        
-      </div>
-    </li>
-    
-    <li>
-      <span class="archive-date">
-        <time datetime='2024-10-13' pubdate>
-          13 Oct, 2024
-        </time>
-      </span>
-      <div class="archive-body">
-        <a href="/tech/lambda_arch/" class="list-item-link">Lambda Architecture</a>
-        
-      </div>
-    </li>
-    
-    <li>
-      <span class="archive-date">
-        <time datetime='2024-04-20' pubdate>
-          20 Apr, 2024
-        </time>
-      </span>
-      <div class="archive-body">
-        <a href="/tech/zookkeeper/" class="list-item-link">Zookeeper</a>
-        
-      </div>
-    </li>
-    
-    <li>
-      <span class="archive-date">
-        <time datetime='2024-03-19' pubdate>
-          19 Mar, 2024
-        </time>
-      </span>
-      <div class="archive-body">
-        <a href="/tech/c&#43;&#43;_coroutine/" class="list-item-link">C&#43;&#43; coroutine</a>
-        
-      </div>
-    </li>
-    
-    <li>
-      <span class="archive-date">
-        <time datetime='2024-02-19' pubdate>
-          19 Feb, 2024
-        </time>
-      </span>
-      <div class="archive-body">
-        <a href="/tech/inv_idx/" class="list-item-link">Inverted Index</a>
-        
-      </div>
-    </li>
-    
-  </ul>
+  </header>
   
+  <content class="content-body">
     
     
-</content>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#attention-类型">Attention 类型</a></li>
+    <li><a href="#kvcache-种类">KVCache 种类</a></li>
+    <li><a href="#trained-weights-and-kv-cachestates">Trained Weights And KV Cache/States</a></li>
+  </ul>
+</nav>
+    
+    <h1 id="deepseek-notes">DeepSeek Notes</h1>
+<h2 id="attention-类型">Attention 类型</h2>
+<p>首先要说明的，Deepseek 采用的是 Shared Key-Value Multi-Query Attention，即 K V 共享一个状态。它有三种 attention 种类：</p>
+<ul>
+<li>CSA (Compressed Sparse Attention)：压缩稀疏 Attention，在注意力计算时，仅选取 topk 个 KV 参与运算。topk 的选取依赖于模型训练的 csa indexer，这也是它稀疏的含义所在。该层 compress_ratio = 4, 以每 4 个token 压缩成一个候选的 kv cache entry。</li>
+<li>HCA (Highly Compressed Attention)：相比 CSA，只是压缩程度更高, compress_ratio = 128，attention 计算时仍然 attend 到全量的 kv。</li>
+<li>SWA (Sliding-Window Attention)：attention 计算时只 attend 一个固定窗口大小的 kv，而且对应的是 dense kv，不压缩。CSA, HCA 都会保留最近 window size 的 uncompressed token，作为压缩信息的补偿。</li>
+</ul>
+<h2 id="kvcache-种类">KVCache 种类</h2>
+<p>Deepseek 因为它特殊的 attention 机制，有七种 kvcache 种类。这七种 kvcache 可以分为两大类，一类是 full，一类是 SWA。full 类型则类似于经典的 full attention，query 对应之前所有的上下文的 kvcache 都会存储下来。SWA 则只保留固定窗口大小的 kvcache。</p>
+<ul>
+<li>CSA KV：每 4 个 token 压缩出来的 kv cache</li>
+<li>HCA KV：每 128 个 token 压缩出来的 kv cache</li>
+<li>CSA State：计算 CSA KV 的临时数据，主要是 kv raw + score raw + ape. CSA State 的计算不仅依赖于当前 4 个 raw kv，还依赖前 4 个 raw kv，也就是 overlap = 1 的概念。因此 CSA State 是有复用价值的。</li>
+<li>HCA State：类似于 CSA State, 用于计算 HCA KV。HCA State 通常只存在 GPU 中，不会卸载出来供后续复用。因为它没有 overlap，计算时也只需要当前 128 个 raw kv。之后继续计算时可以从上一个完整的 128 block 开始重新计算。</li>
+<li>Indexer KV：用于 csa topk 选取的 kv cache</li>
+<li>Indexer State：indexer 内部也有压缩，因此也会存储 state</li>
+<li>SWA KV：SWA 层的 kv cache，固定窗口大小，计算时不需要所有上下文。</li>
+</ul>
+<h2 id="trained-weights-and-kv-cachestates">Trained Weights And KV Cache/States</h2>
+<p>Deepseek 的注意力机制要比经典的 MHA/GQA/MQA 更加复杂。其中还涉及到压缩和 topk indexer，这些结构都有单独的被训练出来的参数。以下便是对所有训练出的参数种类的梳理。（下述符号均参考 deepseek v4 原文中的写法，<a href="https://arxiv.org/html/2606.19348v1">dpskv4 link</a>）</p>
+<ol>
+<li>Attention Queries: $W_Q$</li>
+<li>Uncompressed KV: $W^{aKV}, W^{bKV}$，deepseek v4 使用的是 shared kv 向量，这里的 a, b 是分别计算当前窗口和上一个窗口两个 KV 向量的权重。计算结果为 $C^a, C^b$</li>
+<li>CSA Compressor: $W^{aZ}, W^{bZ}$ 用于计算压缩权重 $Z^a, Z^b$，相关参数还有 bias 参数：$B^a, B^b$。</li>
+<li>CSA Indexer Compressor: 多头 Queries 相关权重：$W^{DQ}, W^{IUQ}$，一个计算 queries 权重，一个为多头 queries 的 projection 权重；$W^w$ 为 indexer 参数，用于和 hidden states 计算出 indexer 的权重，进而计算出每个 token 对应的分数。计算出的分数为：$I_{t,s}$</li>
+<li>CSA Indexer KV:</li>
+<li>CSA KV: 3 计算出的结果会经过 $Softmax_row$ 计算出 logits 然后经过和 2 中结果的 Hadamard product（逐元素相乘）得到压缩后的 KV $C^{Comp}_i$。再通过 4 中得到的分数选出的 topk $C^{SprsComp}_i$ 即为 CSA 对应的 KV Cache</li>
+<li>HCA Compressor:</li>
+<li>HCA KV:</li>
+</ol>
 
-    <p class="page-edited">Last edited Nov 27, 2024</p>
+  </content>
+</article>
+
+    <p class="page-edited">Last edited Jul 5, 2026</p>
   </main>
   <footer class="site-footer">Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
 <br>

@@ -30,7 +30,7 @@ sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动
 	<meta property="og:type" content="article">
 		<meta property="article:section" content="tech">
 		<meta property="article:published_time" content="2026-06-25T00:00:00+00:00">
-		<meta property="article:modified_time" content="2026-06-29T15:50:38+08:00">
+		<meta property="article:modified_time" content="2026-06-30T14:11:37+08:00">
 		<meta property="og:image" content="https://meteoryee.github.io/images/share.png">
 
 
@@ -49,8 +49,8 @@ sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动
 	<meta itemprop="description" content="创新点 sglang 推理引擎很大的一个创新点就是引入了 radix tree，这个结构相比 prefix hash table 的好处是：
 更细粒度的匹配。因为 radix tree 按照 token 粒度索引，因此在匹配时可以做到尽可能地最大匹配。这相对于类似于 paged attention 成 block 的设计来说，可以做到更大程度复用 kvcache。 拥有了树结构之后，父子节点，共同祖先的关系就显而易见，那这样连续的共同祖先节点就可以压缩成一个节点存储，对多轮请求的 fork 也可以天然支持，因为这等价于一个节点的分裂操作。 有利于指导淘汰策略，比如每次都是在所有叶子节点中考虑淘汰谁，这样可以使得公共祖先尽可能地被保留，确保 kvcache 被最大程度复用。 有利于指导调度策略，比如那些拥有最长公共前缀的请求可以被优先调度。当然如何防止那些最长公共前缀短的请求，也是 future work。 进程架构 sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动的 http server 主进程，其中有个 TokenizerManager 的角色，负责响应请求以及 tokenization，之后会把请求通过 ZMQ 传递给 Scheduler 进程，这是核心推理逻辑运行的模块。Scheduler 会根据配置的并行度，比如 tp_size, dp_size 和 pp_size 来 fork 多个子进程，tp 通常是绑定到不同的 GPU 上，pp 是模型层次之间的划分，通过流水线来实现并发，dp 等于多个 replica，每个 dp worker 有一份完整的模型权重，当 dp_size &gt; 1 时，首先会 fork 出一个 DataParallelController 子进程，然后再由 DataParallelController fork 出多个 dp worker。当推理任务执行完后，结果会由 DeTokenizerManager 由 token-id 转为实际的 text。最后，统一交给 TokenizerManager 所在主进程响应用户请求。">
 	<meta itemprop="datePublished" content="2026-06-25T00:00:00+00:00">
-	<meta itemprop="dateModified" content="2026-06-29T15:50:38+08:00">
-	<meta itemprop="wordCount" content="586">
+	<meta itemprop="dateModified" content="2026-06-30T14:11:37+08:00">
+	<meta itemprop="wordCount" content="1033">
 	<meta itemprop="image" content="https://meteoryee.github.io/images/share.png">
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
@@ -924,8 +924,10 @@ sglang 对外呈现的是 http server，基于 FastAPI Web 框架实现。启动
     <li><a href="#scheduler">Scheduler</a></li>
     <li><a href="#kvcache">KVCache</a>
       <ul>
+        <li><a href="#分层模型">分层模型</a></li>
         <li><a href="#radix-tree-node-存什么">Radix Tree Node 存什么</a></li>
         <li><a href="#请求命中路径">请求命中路径</a></li>
+        <li><a href="#淘汰流程">淘汰流程</a></li>
       </ul>
     </li>
   </ul>
@@ -1022,6 +1024,95 @@ forward 计算时，不同请求 batch 怎么排布，如何跟 GPU 交互，这
     Req --&gt; Ctrl
   </div>
 </figure>
+<h3 id="分层模型">分层模型</h3>
+<p>HiRadixCache 将不同分层的 KVCache 抽象成一棵 radix tree 统一管理。其中 TreeNode 中的 value 对应 GPU KV pool 里的 slot indices，host_value 对应 CPU host KV pool 里的 slot indices。hash_value 会统一映射到 L3 存储介质，L3 可以是任何实现了 HiCacheStorage 接口的存储系统，如本地磁盘、远端内存池等。KVCache 的相关操作由 HiCacheController 负责。</p>
+<p>分层存储备份的策略主要有三种：</p>
+<ol>
+<li>write through: 写 L1 的同时写 L2</li>
+<li>write through selective: 命中次数达到阈值之后再备份到 L2</li>
+<li>write back: 不主动备份，当 L1 满后卸载到 L2</li>
+</ol>
+<figure class="mermaid-figure" role="button" tabindex="0" aria-label="Open diagram">
+  <div class="mermaid">
+  classDiagram
+direction LR
+
+class TreeNode {
+  +RadixKey key
+  +Tensor value_gpu_indices
+  +Tensor host_value_cpu_indices
+  +List hash_value_storage_keys
+  +int lock_ref
+  +int host_ref_counter
+  +int hit_count
+  +float last_access_time
+}
+
+class RadixKey {
+  +token_ids
+  +extra_key
+  +hash_page()
+}
+
+class HiRadixCache {
+  +match_prefix()
+  +insert()
+  +evict()
+  +write_backup()
+  +init_load_back()
+  +prefetch_from_storage()
+  +check_prefetch_progress()
+}
+
+class HiCacheController {
+  +write()
+  +load()
+  +start_loading()
+  +write_storage()
+  +prefetch()
+  +terminate_prefetch()
+  +evict_device()
+  +evict_host()
+}
+
+class DeviceKVPool {
+  +get_key_buffer()
+  +get_value_buffer()
+  +set_kv_buffer()
+}
+
+class TokenToKVPoolAllocator {
+  +alloc()
+  +free()
+}
+
+class HostKVCache {
+  +alloc()
+  +free()
+  +backup_from_device_all_layer()
+  +load_to_device_per_layer()
+  +get_data_page()
+  +set_from_flat_data_page()
+}
+
+class HiCacheStorage {
+  +batch_exists()
+  +batch_get()
+  +batch_set()
+}
+
+TreeNode --&gt; RadixKey : key
+TreeNode --&gt; DeviceKVPool : value
+TreeNode --&gt; HostKVCache : host_value
+TreeNode --&gt; HiCacheStorage : hash_value
+HiRadixCache --&gt; TreeNode : manages
+HiRadixCache --&gt; HiCacheController : delegates_transfer
+HiCacheController --&gt; TokenToKVPoolAllocator : allocate_l1
+HiCacheController --&gt; DeviceKVPool : l1_gpu
+HiCacheController --&gt; HostKVCache : l2_host
+HiCacheController --&gt; HiCacheStorage : l3_storage
+  </div>
+</figure>
 <h3 id="radix-tree-node-存什么">Radix Tree Node 存什么</h3>
 <table>
 	<thead>
@@ -1100,11 +1191,69 @@ host_value/lock_ref/host_lock_ref，定义在 python/sglang/srt/mem_cache/unifie
     end
   </div>
 </figure>
+<h3 id="淘汰流程">淘汰流程</h3>
+<p>L1: 淘汰时，如果 host_value 为空且不是 write_back policy，对应整个结点直接淘汰；如果 host_value 为空但 policy 是 write_back，device value 置空，缓存卸载 L2。如果 host_value 不为空，只淘汰 device 对应的 value，并保留 host_value 供后续 loadback。
+L2: 淘汰时通常要找到 device value 也为空的节点，然后直接删除 radix tree 对应的整个节点。
+L3: radix tree 不主动“管理”L3 的生命周期；它只保存能访问 L3 的 hash_value。真正往 L3 写 KV 的时机，是某个 node 已经完成 L1 GPU -&gt; L2 host backup 之后，如果 storage backend 开启，就异步把 host 上的 KV page 写入 L3。</p>
+<h4 id="l1-gpu-eviction-流程">L1 GPU Eviction 流程</h4>
+<figure class="mermaid-figure" role="button" tabindex="0" aria-label="Open diagram">
+  <div class="mermaid">
+  graph TD
+  A[&#34;Cache miss or L2 loadback needs GPU KV slots&#34;] --&gt; B[&#34;Try allocate L1 GPU KV slots&#34;]
+  B --&gt;|&#34;success&#34;| C[&#34;Continue with compute or loadback&#34;]
+  B --&gt;|&#34;fail&#34;| D[&#34;HiRadixCache.evict(num_tokens)&#34;]
+
+  D --&gt; E[&#34;Build heap from evictable_leaves&#34;]
+  E --&gt; F[&#34;Pick lowest priority leaf node&#34;]
+  F --&gt; G{&#34;lock_ref &gt; 0&#34;}
+  G --&gt;|&#34;yes&#34;| F
+  G --&gt;|&#34;no&#34;| H{&#34;host_value exists&#34;}
+
+  H --&gt;|&#34;yes&#34;| I[&#34;L1 demotion: free GPU value&#34;]
+  I --&gt; I2[&#34;node.value = None&#34;]
+  I2 --&gt; I3[&#34;keep node.host_value&#34;]
+
+  H --&gt;|&#34;no&#34;| J{&#34;write_policy is write_back&#34;}
+  J --&gt;|&#34;yes&#34;| K[&#34;write_backup: GPU to host&#34;]
+  K --&gt; K2[&#34;set node.host_value&#34;]
+  K2 --&gt; I
+
+  J --&gt;|&#34;no&#34;| L[&#34;regular eviction&#34;]
+  L --&gt; L2[&#34;free node.value&#34;]
+  L2 --&gt; L3[&#34;delete radix leaf&#34;]
+
+  I3 --&gt; M{&#34;enough tokens evicted&#34;}
+  L3 --&gt; M
+  M --&gt;|&#34;no&#34;| F
+  M --&gt;|&#34;yes&#34;| N[&#34;Retry allocation or loadback&#34;]
+  </div>
+</figure>
+<h4 id="l2-host-eviction-流程">L2 Host Eviction 流程</h4>
+<figure class="mermaid-figure" role="button" tabindex="0" aria-label="Open diagram">
+  <div class="mermaid">
+  graph TD
+  A[&#34;Need L2 host KV slots&#34;] --&gt; B[&#34;Try allocate host slots&#34;]
+  B --&gt;|&#34;success&#34;| C[&#34;Backup or prefetch continues&#34;]
+  B --&gt;|&#34;fail&#34;| D[&#34;HiRadixCache.evict_host(num_tokens)&#34;]
+
+  D --&gt; E[&#34;Build heap from evictable_host_leaves&#34;]
+  E --&gt; F[&#34;Pick lowest priority host leaf&#34;]
+  F --&gt; G{&#34;node.value is None&#34;}
+  G --&gt;|&#34;no&#34;| F
+  G --&gt;|&#34;yes&#34;| H{&#34;host_ref_counter &gt; 0&#34;}
+  H --&gt;|&#34;yes&#34;| F
+  H --&gt;|&#34;no&#34;| I[&#34;free node.host_value&#34;]
+  I --&gt; J[&#34;remove leaf from radix tree&#34;]
+  J --&gt; K{&#34;enough host tokens evicted&#34;}
+  K --&gt;|&#34;no&#34;| F
+  K --&gt;|&#34;yes&#34;| L[&#34;Retry host allocation&#34;]
+  </div>
+</figure>
 
   </content>
 </article>
 
-    <p class="page-edited">Last edited Jun 29, 2026</p>
+    <p class="page-edited">Last edited Jun 30, 2026</p>
   </main>
   <footer class="site-footer">Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
 <br>
