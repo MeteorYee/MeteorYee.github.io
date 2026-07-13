@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f3f0e8"/>
+  <rect x="48" y="48" width="1104" height="534" fill="none" stroke="#d8d3c7" stroke-width="2"/>
+
+  <path d="M92 91l5 11 11 5-11 5-5 11-5-11-11-5 11-5z" fill="#9f5934"/>
+  <text x="124" y="116" fill="#686d65" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="21" font-weight="700" letter-spacing="4">SYLVAN'S ABRACADABRA</text>
+
+  <text x="92" y="270" fill="#19231c" font-family="Iowan Old Style, Palatino Linotype, Book Antiqua, Georgia, serif" font-size="78" font-weight="500" letter-spacing="-2">Engineer by trade.</text>
+  <text x="92" y="365" fill="#315f4d" font-family="Iowan Old Style, Palatino Linotype, Book Antiqua, Georgia, serif" font-size="82" font-style="italic" font-weight="500" letter-spacing="-3">Sylvan by choice.</text>
+
+  <line x1="92" y1="470" x2="164" y2="470" stroke="#9f5934" stroke-width="2"/>
+  <text x="184" y="478" fill="#686d65" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="20" font-weight="600" letter-spacing="2.4">BEIJING · SEARCH SYSTEMS · PERSONAL NOTES</text>
+
+  <circle cx="1042" cy="318" r="92" fill="none" stroke="#ead8c9" stroke-width="2"/>
+  <path d="M1042 210c8 55 25 91 77 108-52 17-69 53-77 108-8-55-25-91-77-108 52-17 69-53 77-108z" fill="#ead8c9"/>
+  <path d="M1042 268c4 25 12 41 36 50-24 9-32 25-36 50-4-25-12-41-36-50 24-9 32-25 36-50z" fill="#9f5934"/>
+</svg>

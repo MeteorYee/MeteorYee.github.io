@@ -28,14 +28,15 @@ Alibaba
 2023/10 - present
 Software engineer of Alibaba’s search engine
 
+Recently, LLM KV Cache storage management
 C&#43;&#43;
-Search Engine
-Distributed System
+Search Engine, Indexing
+Lambda architecture
 
 Huawei, 2012 Lab
-2020/04 - 2023/09
-Software engineer of the storage engine of a cloud-native distributed database system" />
+2020/04 - 2023/09" />
 <meta name="keywords" content="" />
+<link rel="canonical" href="https://meteoryee.github.io/resume/" />
 
 
 <meta property="og:url" content="https://meteoryee.github.io/resume/">
@@ -45,11 +46,10 @@ Software engineer of the storage engine of a cloud-native distributed database s
 M.S. Computer Science Beijing Jiao Tong University, Beijing, China, 2013 - 2017
 B.E. Computer Science and Technology Experience Alibaba 2023/10 - present
 Software engineer of Alibaba’s search engine
-C&#43;&#43; Search Engine Distributed System Huawei, 2012 Lab 2020/04 - 2023/09
-Software engineer of the storage engine of a cloud-native distributed database system">
+Recently, LLM KV Cache storage management C&#43;&#43; Search Engine, Indexing Lambda architecture Huawei, 2012 Lab 2020/04 - 2023/09">
 	<meta property="og:locale" content="en_US">
 	<meta property="og:type" content="article">
-		<meta property="article:modified_time" content="2026-06-16T23:36:08+08:00">
+		<meta property="article:modified_time" content="2026-07-14T00:12:57+08:00">
 		<meta property="og:image" content="https://meteoryee.github.io/images/share.png">
 
 
@@ -62,8 +62,7 @@ Software engineer of the storage engine of a cloud-native distributed database s
 M.S. Computer Science Beijing Jiao Tong University, Beijing, China, 2013 - 2017
 B.E. Computer Science and Technology Experience Alibaba 2023/10 - present
 Software engineer of Alibaba’s search engine
-C&#43;&#43; Search Engine Distributed System Huawei, 2012 Lab 2020/04 - 2023/09
-Software engineer of the storage engine of a cloud-native distributed database system">
+Recently, LLM KV Cache storage management C&#43;&#43; Search Engine, Indexing Lambda architecture Huawei, 2012 Lab 2020/04 - 2023/09">
 
 
 
@@ -73,25 +72,51 @@ Software engineer of the storage engine of a cloud-native distributed database s
 M.S. Computer Science Beijing Jiao Tong University, Beijing, China, 2013 - 2017
 B.E. Computer Science and Technology Experience Alibaba 2023/10 - present
 Software engineer of Alibaba’s search engine
-C&#43;&#43; Search Engine Distributed System Huawei, 2012 Lab 2020/04 - 2023/09
-Software engineer of the storage engine of a cloud-native distributed database system">
-	<meta itemprop="dateModified" content="2026-06-16T23:36:08+08:00">
-	<meta itemprop="wordCount" content="127">
+Recently, LLM KV Cache storage management C&#43;&#43; Search Engine, Indexing Lambda architecture Huawei, 2012 Lab 2020/04 - 2023/09">
+	<meta itemprop="dateModified" content="2026-07-14T00:12:57+08:00">
+	<meta itemprop="wordCount" content="157">
 	<meta itemprop="image" content="https://meteoryee.github.io/images/share.png">
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
   <style>
   :root {
     color-scheme: light dark;
-    --bg: #f8faf9;
-    --text: #2d3330;
-    --muted: #66736d;
-    --heading: #171b19;
-    --link: #2b6f73;
-    --link-hover: #164f54;
-    --border: #d9e0dc;
-    --surface: #ffffff;
-    --code-bg: #eef3f1;
+    --bg: #f3f0e8;
+    --text: #343832;
+    --muted: #686d65;
+    --heading: #19231c;
+    --link: #315f4d;
+    --link-hover: #193f32;
+    --border: #d8d3c7;
+    --surface: #faf8f2;
+    --code-bg: #e9e7df;
+    --accent: #9f5934;
+    --accent-soft: #ead8c9;
+    --sans:
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
+    --serif:
+      ui-serif,
+      "Iowan Old Style",
+      "Palatino Linotype",
+      "Book Antiqua",
+      "Songti SC",
+      Georgia,
+      serif;
+    --mono:
+      ui-monospace,
+      SFMono-Regular,
+      Menlo,
+      Monaco,
+      Consolas,
+      "Liberation Mono",
+      monospace;
+    --site-width: 1080px;
+    --reading-width: 720px;
   }
 
   * {
@@ -103,17 +128,9 @@ Software engineer of the storage engine of a cloud-native distributed database s
   }
 
   body {
-    font-family:
-      ui-sans-serif,
-      system-ui,
-      -apple-system,
-      BlinkMacSystemFont,
-      "Segoe UI",
-      sans-serif;
-    margin: auto;
-    padding: clamp(18px, 5vw, 32px);
-    width: 100%;
-    max-width: 760px;
+    margin: 0;
+    min-width: 0;
+    font-family: var(--sans);
     text-align: left;
     background-color: var(--bg);
     word-wrap: break-word;
@@ -121,6 +138,54 @@ Software engineer of the storage engine of a cloud-native distributed database s
     line-height: 1.75;
     color: var(--text);
     letter-spacing: 0;
+  }
+
+  .skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 1000;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    transform: translateY(calc(-100% - 1rem));
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+
+  .site-shell {
+    width: min(calc(100% - clamp(36px, 8vw, 96px)), var(--site-width));
+    margin: 0 auto;
+  }
+
+  main {
+    width: 100%;
+    max-width: var(--reading-width);
+    min-height: 55vh;
+    margin: 0 auto;
+  }
+
+  .is-home main {
+    max-width: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--serif);
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    overflow-wrap: normal;
+    word-break: normal;
   }
 
   h1,
@@ -145,15 +210,15 @@ Software engineer of the storage engine of a cloud-native distributed database s
   }
 
   h1 {
-    font-size: 2rem;
+    font-size: clamp(2.15rem, 6vw, 3.1rem);
   }
 
   h2 {
-    font-size: 1.45rem;
+    font-size: clamp(1.55rem, 4vw, 2rem);
   }
 
   h3 {
-    font-size: 1.18rem;
+    font-size: 1.28rem;
   }
 
   p {
@@ -163,11 +228,12 @@ Software engineer of the storage engine of a cloud-native distributed database s
   a {
     color: var(--link);
     text-decoration-thickness: 1px;
-    text-underline-offset: 0.18em;
+    text-underline-offset: 0.22em;
     transition:
       color 0.16s ease,
       border-color 0.16s ease,
-      background-color 0.16s ease;
+      background-color 0.16s ease,
+      transform 0.16s ease;
   }
 
   a:hover {
@@ -184,8 +250,13 @@ Software engineer of the storage engine of a cloud-native distributed database s
   }
 
   .site-header {
-    margin: 0 0 2.7rem;
-    padding-top: 0.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    margin: 0 0 clamp(3.5rem, 8vw, 6rem);
+    padding: 1.85rem 0 1.15rem;
+    border-bottom: 1px solid var(--border);
   }
 
   .title {
@@ -194,38 +265,52 @@ Software engineer of the storage engine of a cloud-native distributed database s
   }
 
   .site-title {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
     color: var(--heading);
+  }
+
+  .site-mark {
+    color: var(--accent);
+    font-size: 0.78rem;
+    line-height: 1;
+    transform: translateY(-0.05em);
   }
 
   .site-title h2 {
     margin: 0;
-    font-size: 1.7rem;
-    font-weight: 650;
-    letter-spacing: 0;
+    font-size: clamp(1.25rem, 2.5vw, 1.55rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    white-space: nowrap;
   }
 
   nav {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.3rem 1.45rem;
-    margin-top: 1.05rem;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0 1.2rem;
+    margin: 0;
   }
 
   a.nav-link {
     color: var(--muted);
     text-decoration: none;
-    font-size: 0.96rem;
-    font-weight: 500;
-    line-height: 1.5;
+    font-size: 0.76rem;
+    font-weight: 650;
+    line-height: 1.2;
+    letter-spacing: 0.085em;
+    text-transform: uppercase;
     border-bottom: 1px solid transparent;
-    padding: 0.1rem 0;
+    padding: 0.55rem 0 0.5rem;
   }
 
   a.nav-link:hover,
   a.nav-link.is-active {
     color: var(--heading);
-    border-bottom-color: var(--border);
+    border-bottom-color: var(--accent);
   }
 
   textarea {
@@ -235,10 +320,6 @@ Software engineer of the storage engine of a cloud-native distributed database s
 
   input {
     font-size: 16px;
-  }
-
-  main {
-    min-height: 55vh;
   }
 
   content,
@@ -252,13 +333,13 @@ Software engineer of the storage engine of a cloud-native distributed database s
 
   .page-header,
   .list-header {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
   }
 
   .page-header h1,
   .list-header h1 {
     margin-top: 0;
-    margin-bottom: 0.55rem;
+    margin-bottom: 0.65rem;
   }
 
   .page-meta,
@@ -291,11 +372,17 @@ Software engineer of the storage engine of a cloud-native distributed database s
   }
 
   .page-edited {
-    margin-top: 2.75rem;
+    margin-top: 3.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
   }
 
   .home-updated {
-    margin-bottom: 1.4rem;
+    margin: 4.5rem 0 0;
+    text-align: right;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   .content-body ul,
@@ -363,14 +450,7 @@ Software engineer of the storage engine of a cloud-native distributed database s
   }
 
   code {
-    font-family:
-      ui-monospace,
-      SFMono-Regular,
-      Menlo,
-      Monaco,
-      Consolas,
-      "Liberation Mono",
-      monospace;
+    font-family: var(--mono);
     font-size: 0.92em;
   }
 
@@ -648,9 +728,22 @@ Software engineer of the storage engine of a cloud-native distributed database s
   #TableOfContents {
     display: block;
     margin: 1.5rem 0 2rem;
-    padding: 0.85rem 1rem;
-    border-left: 2px solid var(--border);
+    padding: 1rem 1.15rem 1.05rem;
+    border-left: 2px solid var(--accent-soft);
     background: var(--surface);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  #TableOfContents::before {
+    display: block;
+    margin-bottom: 0.65rem;
+    color: var(--accent);
+    content: "On this page";
+    font-size: 0.65rem;
+    font-weight: 750;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
   #TableOfContents ul {
@@ -672,11 +765,141 @@ Software engineer of the storage engine of a cloud-native distributed database s
     text-decoration: underline;
   }
 
-  footer {
-    margin-top: 3rem;
-    padding: 1.5rem 0 0.4rem;
+   
+  .page--resume .content-body > h1 {
+    margin: 0;
+    font-size: clamp(2.75rem, 7vw, 4rem);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+  }
+
+  .page--resume .content-body > h1 + ul {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.65rem 1.25rem;
+    margin: 1.6rem 0 4rem;
+    padding: 1.15rem 0;
     border-top: 1px solid var(--border);
-    text-align: center;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.82rem;
+    list-style: none;
+  }
+
+  .page--resume .content-body > h1 + ul li {
+    min-width: 0;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .page--resume h2 {
+    margin-top: 3.5rem;
+  }
+
+  .page--resume h3 {
+    margin-top: 2.2rem;
+  }
+
+  .page--resume h3 + p {
+    margin-top: -0.35rem;
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .page--resume h3 + p em {
+    font-style: normal;
+  }
+
+   
+  .kind-404 main {
+    max-width: none;
+  }
+
+  .not-found {
+    position: relative;
+    display: flex;
+    min-height: min(620px, 65vh);
+    max-width: 720px;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .not-found h1 {
+    max-width: 10ch;
+    margin: 0;
+    font-size: clamp(3.5rem, 8vw, 6.5rem);
+    font-weight: 500;
+    line-height: 0.96;
+    letter-spacing: -0.055em;
+  }
+
+  .not-found > p:not(.archive-kicker) {
+    max-width: 30rem;
+    margin: 1.8rem 0 1.5rem;
+    color: var(--muted);
+    font-family: var(--serif);
+    font-size: 1.05rem;
+  }
+
+  .not-found a {
+    align-self: flex-start;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--heading);
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .not-found a span {
+    margin-left: 0.35rem;
+    color: var(--accent);
+  }
+
+  .not-found-mark {
+    position: absolute;
+    right: 1rem;
+    bottom: 3rem;
+    z-index: 0;
+    color: var(--accent-soft);
+    font-size: clamp(10rem, 25vw, 17rem);
+    line-height: 1;
+    transform: rotate(12deg);
+  }
+
+  .not-found > :not(.not-found-mark) {
+    position: relative;
+    z-index: 1;
+  }
+
+  footer {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-top: clamp(4rem, 10vw, 7rem);
+    padding: 1.35rem 0 2.25rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.76rem;
+    letter-spacing: 0.035em;
+    text-align: left;
+  }
+
+  footer p {
+    margin: 0;
+  }
+
+  .footer-copyright {
+    color: var(--heading);
+    font-weight: 650;
+  }
+
+  .footer-note {
+    text-align: right;
   }
 
   .helptext {
@@ -802,17 +1025,599 @@ Software engineer of the storage engine of a cloud-native distributed database s
     margin: 0.45rem 0 0;
   }
 
+   
+  .archive-header {
+    margin-bottom: clamp(3.5rem, 8vw, 5.5rem);
+  }
+
+  .archive-kicker {
+    margin: 0 0 0.7rem;
+    color: var(--accent);
+    font-size: 0.7rem;
+    font-weight: 750;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .archive-header h1 {
+    margin: 0;
+  }
+
+  .archive-intro {
+    max-width: 32rem;
+    margin-top: 1.2rem;
+    color: var(--muted);
+    font-size: 0.94rem;
+  }
+
+  .archive-intro p:last-child {
+    margin-bottom: 0;
+  }
+
+  .archive-year + .archive-year {
+    margin-top: 3.4rem;
+  }
+
+  .archive-year-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 1.35rem;
+  }
+
+  .archive-year-heading::after {
+    order: 2;
+    width: 2.6rem;
+    height: 1px;
+    background: var(--accent-soft);
+    content: "";
+  }
+
+  .archive-year-heading h2 {
+    order: 1;
+    margin: 0;
+    font-size: 1.02rem;
+    font-weight: 650;
+    letter-spacing: 0.02em;
+  }
+
+  .archive-year-heading span {
+    order: 3;
+    color: var(--muted);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .archive-entries {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .archive-entries li + li {
+    margin-top: 0.8rem;
+  }
+
+  .archive-entries a {
+    display: grid;
+    align-items: start;
+    color: var(--heading);
+    text-decoration: none;
+  }
+
+  .archive-entries a:hover strong {
+    color: var(--link);
+  }
+
+  .archive-entries a i {
+    align-self: center;
+    color: var(--accent);
+    font-style: normal;
+    transition: transform 0.16s ease;
+  }
+
+  .archive-entries a:hover i {
+    transform: translate(0.12rem, -0.12rem);
+  }
+
+  .archive-entry-copy {
+    min-width: 0;
+  }
+
+  .archive-entry-copy strong {
+    display: block;
+    font-family: var(--serif);
+    font-size: 1.24rem;
+    font-weight: 500;
+    line-height: 1.3;
+    transition: color 0.16s ease;
+  }
+
+  .archive-entry-copy small {
+    display: block;
+    margin-top: 0.22rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .archive-entries--blog a {
+    grid-template-columns: 4.6rem minmax(0, 1fr) 1rem;
+    gap: 0.9rem;
+    padding: 0.25rem 0;
+  }
+
+  .archive-entries--blog time {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    color: var(--muted);
+  }
+
+  .archive-entries--blog time span {
+    color: var(--heading);
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .archive-entries--blog time small,
+  .archive-entries--tech time,
+  .archive-entry-index {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.075em;
+  }
+
+  .archive-entries--tech li + li {
+    margin-top: 0.42rem;
+  }
+
+  .archive-entries--tech a {
+    grid-template-columns: 2.7rem minmax(0, 1fr) 5.6rem 1rem;
+    gap: 0.75rem;
+    padding: 0.38rem 0;
+  }
+
+  .archive-entry-index,
+  .archive-entries--tech time {
+    padding-top: 0.28rem;
+    color: var(--muted);
+  }
+
+  .archive-entry-index {
+    font-family: var(--mono);
+  }
+
+  .archive-entries--tech time {
+    justify-self: end;
+  }
+
+   
+  .type-gallery main {
+    max-width: none;
+  }
+
+  .gallery-header {
+    max-width: 720px;
+    margin: 0 auto clamp(5rem, 11vw, 8rem);
+  }
+
+  .gallery-header h1 {
+    margin: 0;
+  }
+
+  .gallery-header > p:last-child {
+    max-width: 32rem;
+    margin: 1.2rem 0 0;
+    color: var(--muted);
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .gallery-journal {
+    display: grid;
+    gap: clamp(5.5rem, 13vw, 10rem);
+  }
+
+  .gallery-row {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  .gallery-entry {
+    min-width: 0;
+    margin: 0;
+  }
+
+  .gallery-row--feature-left .gallery-entry {
+    grid-column: 1 / span 9;
+  }
+
+  .gallery-row--feature-right .gallery-entry {
+    grid-column: 4 / -1;
+  }
+
+  .gallery-row--wide-left .gallery-entry {
+    grid-column: 1 / span 8;
+  }
+
+  .gallery-row--wide-right .gallery-entry {
+    grid-column: 4 / -1;
+  }
+
+  .gallery-row--portrait-left .gallery-entry {
+    grid-column: 2 / span 5;
+  }
+
+  .gallery-row--portrait-right .gallery-entry {
+    grid-column: 7 / span 5;
+  }
+
+  .gallery-row--quiet-left .gallery-entry {
+    grid-column: 2 / span 5;
+  }
+
+  .gallery-row--quiet-right .gallery-entry {
+    grid-column: 8 / -1;
+  }
+
+  .gallery-entry .gallery-image-button {
+    width: 100%;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .gallery-row--feature-left .gallery-image-button,
+  .gallery-row--feature-right .gallery-image-button {
+    aspect-ratio: 4 / 3;
+  }
+
+  .gallery-row--wide-left .gallery-image-button,
+  .gallery-row--wide-right .gallery-image-button {
+    aspect-ratio: 16 / 9;
+  }
+
+  .gallery-row--portrait-left .gallery-image-button,
+  .gallery-row--portrait-right .gallery-image-button {
+    aspect-ratio: 4 / 5;
+  }
+
+  .gallery-row--quiet-left .gallery-image-button,
+  .gallery-row--quiet-right .gallery-image-button {
+    aspect-ratio: 1 / 1;
+  }
+
+  .gallery-entry .gallery-image-button img {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    object-fit: cover;
+  }
+
+  .gallery-entry figcaption {
+    max-width: 42rem;
+    padding-top: 1rem;
+  }
+
+  .gallery-entry-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 0.55rem;
+    color: var(--muted);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.085em;
+    text-transform: uppercase;
+  }
+
+  .gallery-entry-meta span {
+    color: var(--accent);
+  }
+
+  .gallery-entry-meta span::after {
+    display: inline-block;
+    width: 2rem;
+    height: 1px;
+    margin-left: 0.7rem;
+    background: var(--accent-soft);
+    vertical-align: middle;
+    content: "";
+  }
+
+  .gallery-entry figcaption > strong {
+    display: block;
+    color: var(--heading);
+    font-family: var(--serif);
+    font-size: clamp(1.45rem, 3vw, 2rem);
+    font-weight: 500;
+    line-height: 1.15;
+  }
+
+  .gallery-entry-place {
+    display: block;
+    margin-top: 0.3rem;
+    color: var(--muted);
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+  }
+
+  .gallery-entry figcaption p {
+    max-width: 36rem;
+    margin: 0.75rem 0 0;
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 0.96rem;
+    line-height: 1.65;
+  }
+
+  .gallery-row--quiet-left .gallery-entry figcaption > strong,
+  .gallery-row--quiet-right .gallery-entry figcaption > strong {
+    font-size: clamp(1.3rem, 2.4vw, 1.65rem);
+  }
+
+   
+  .home-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr);
+    align-items: center;
+    gap: clamp(2.8rem, 7vw, 6.5rem);
+    min-height: min(680px, calc(100vh - 150px));
+    margin-top: clamp(-1.5rem, -2vw, -0.5rem);
+    padding-bottom: clamp(5rem, 12vw, 9rem);
+  }
+
+  .home-hero-copy {
+    position: relative;
+    z-index: 1;
+  }
+
+  .home-eyebrow,
+  .home-section-number,
+  .home-index-links span {
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .home-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .home-eyebrow::before {
+    width: 2.8rem;
+    height: 1px;
+    background: var(--accent);
+    content: "";
+  }
+
+  .home-title {
+    max-width: 10ch;
+    margin: 0 0 2rem;
+    font-size: clamp(3.35rem, 7.2vw, 6.1rem);
+    font-weight: 500;
+    line-height: 0.95;
+    letter-spacing: -0.055em;
+  }
+
+  .home-title span,
+  .home-title em {
+    display: block;
+  }
+
+  .home-title em {
+    margin-top: 0.12em;
+    color: var(--link);
+    font-weight: 500;
+  }
+
+  .home-lede {
+    max-width: 34rem;
+    margin-bottom: 1.9rem;
+    color: var(--text);
+    font-size: clamp(1.04rem, 1.8vw, 1.18rem);
+    line-height: 1.72;
+  }
+
+  .home-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.5rem;
+  }
+
+  .home-actions a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--heading);
+    font-size: 0.9rem;
+    font-weight: 650;
+    text-decoration: none;
+  }
+
+  .home-actions a span {
+    color: var(--accent);
+    transition: transform 0.16s ease;
+  }
+
+  .home-actions a:hover span {
+    transform: translate(0.12rem, -0.12rem);
+  }
+
+  .home-portrait {
+    position: relative;
+    width: min(100%, 410px);
+    margin: 0 0 0 auto;
+  }
+
+  .home-portrait::before {
+    position: absolute;
+    inset: 12px -12px -12px 12px;
+    z-index: -1;
+    border: 1px solid var(--accent-soft);
+    content: "";
+  }
+
+  .content-image-button.home-portrait-button,
+  .content-image-button.home-wechat-button {
+    margin: 0;
+  }
+
+  .content-image-button.home-portrait-button img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    object-fit: cover;
+    object-position: 50% 50%;
+  }
+
+  .home-portrait figcaption {
+    margin-top: 0.9rem;
+    color: var(--muted);
+    font-family: var(--serif);
+    font-size: 0.8rem;
+    font-style: italic;
+    text-align: right;
+  }
+
+  .home-story,
+  .home-index {
+    display: grid;
+    grid-template-columns: minmax(150px, 0.36fr) minmax(0, 1fr);
+    gap: clamp(2rem, 7vw, 6rem);
+    padding: clamp(3rem, 7vw, 5rem) 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .home-section-heading h2 {
+    max-width: 8ch;
+    margin: 0.55rem 0 0;
+    font-size: clamp(1.75rem, 3vw, 2.45rem);
+    line-height: 1.08;
+  }
+
+  .home-index .home-section-heading h2 {
+    max-width: 10ch;
+  }
+
+  .home-story-body {
+    max-width: 680px;
+    font-family: var(--serif);
+    font-size: clamp(1.05rem, 1.8vw, 1.19rem);
+    line-height: 1.9;
+  }
+
+  .home-story-body > p:first-child::first-letter {
+    float: left;
+    margin: 0.06em 0.12em 0 0;
+    color: var(--accent);
+    font-size: 4.2em;
+    line-height: 0.78;
+  }
+
+  .home-wechat {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 150px;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .home-wechat p {
+    max-width: 24rem;
+    margin: 0.55rem 0 0;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+
+  .home-wechat-button {
+    justify-self: end;
+    width: 150px;
+  }
+
+  .content-image-button.home-wechat-button img {
+    width: 100%;
+    margin: 0;
+    border-color: var(--border);
+    border-radius: 0;
+  }
+
+  .home-index-links {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .home-index-links a {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 13rem;
+    padding: 1.05rem 2rem 1rem 0;
+    border-top: 2px solid var(--heading);
+    color: var(--heading);
+    text-decoration: none;
+  }
+
+  .home-index-links a:hover {
+    border-top-color: var(--accent);
+  }
+
+  .home-index-links strong {
+    margin-top: 2.2rem;
+    font-family: var(--serif);
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    font-weight: 500;
+    line-height: 1.25;
+  }
+
+  .home-index-links i {
+    position: absolute;
+    right: 0;
+    bottom: 0.85rem;
+    color: var(--accent);
+    font-style: normal;
+    transition: transform 0.16s ease;
+  }
+
+  .home-index-links a:hover i {
+    transform: translate(0.12rem, -0.12rem);
+  }
+
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #1f2422;
-      --text: #dbe2de;
-      --muted: #9aa9a2;
-      --heading: #f3f6f4;
-      --link: #8ccfd0;
-      --link-hover: #b8e7e5;
-      --border: #3a4540;
-      --surface: #272d2a;
-      --code-bg: #303734;
+      --bg: #171c18;
+      --text: #d5d7cf;
+      --muted: #9ca198;
+      --heading: #f1efe6;
+      --link: #91bca7;
+      --link-hover: #c1ddcf;
+      --border: #3a423b;
+      --surface: #202721;
+      --code-bg: #252d27;
+      --accent: #d08a5f;
+      --accent-soft: #584536;
     }
 
     textarea,
@@ -827,21 +1632,326 @@ Software engineer of the storage engine of a cloud-native distributed database s
     }
   }
 
+  @media (max-width: 820px) {
+    .gallery-header {
+      margin-bottom: 5rem;
+    }
+
+    .gallery-journal {
+      gap: 6rem;
+    }
+
+    .gallery-row {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    .gallery-row--feature-left .gallery-entry,
+    .gallery-row--feature-right .gallery-entry,
+    .gallery-row--wide-left .gallery-entry,
+    .gallery-row--wide-right .gallery-entry {
+      grid-column: 1 / -1;
+    }
+
+    .gallery-row--portrait-left .gallery-entry,
+    .gallery-row--quiet-left .gallery-entry {
+      grid-column: 1 / span 5;
+    }
+
+    .gallery-row--portrait-right .gallery-entry,
+    .gallery-row--quiet-right .gallery-entry {
+      grid-column: 2 / -1;
+    }
+
+    .home-hero {
+      grid-template-columns: 1fr;
+      min-height: 0;
+      gap: 3.5rem;
+      margin-top: 0;
+    }
+
+    .home-hero-copy {
+      max-width: 680px;
+    }
+
+    .home-title {
+      max-width: 11ch;
+    }
+
+    .home-portrait {
+      width: min(100%, 680px);
+      margin: 0;
+    }
+
+    .content-image-button.home-portrait-button img {
+      aspect-ratio: 16 / 10;
+    }
+
+    .home-story,
+    .home-index {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .home-section-heading h2 {
+      max-width: none;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .site-header {
+      align-items: stretch;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-bottom: 3.25rem;
+      padding-top: 1.35rem;
+    }
+
+    nav {
+      justify-content: space-between;
+      gap: 0 0.4rem;
+    }
+
+    .home-index-links {
+      grid-template-columns: 1fr;
+    }
+
+    .home-index-links a {
+      min-height: 9rem;
+    }
+  }
+
   @media (max-width: 540px) {
+    .site-shell {
+      width: calc(100% - 32px);
+    }
+
     body {
       line-height: 1.7;
     }
 
     h1 {
-      font-size: 1.72rem;
+      font-size: 2rem;
+    }
+
+    .page--resume .content-body > h1 {
+      font-size: 2.7rem;
+    }
+
+    .page--resume .content-body > h1 + ul {
+      grid-template-columns: 1fr;
+      margin-bottom: 3.2rem;
+    }
+
+    .page--resume h2 {
+      margin-top: 2.8rem;
+    }
+
+    .not-found {
+      min-height: 62vh;
+    }
+
+    .not-found h1 {
+      font-size: clamp(3.2rem, 17vw, 4.25rem);
+    }
+
+    .not-found-mark {
+      right: -1rem;
+      bottom: 4rem;
+      font-size: 10rem;
+    }
+
+    .archive-header {
+      margin-bottom: 3.3rem;
+    }
+
+    .archive-year + .archive-year {
+      margin-top: 2.8rem;
+    }
+
+    .archive-year-heading {
+      margin-bottom: 1.1rem;
+    }
+
+    .archive-entries li + li {
+      margin-top: 0.65rem;
+    }
+
+    .archive-entry-copy strong {
+      font-size: 1.1rem;
+    }
+
+    .archive-entries--blog a {
+      grid-template-columns: 3.45rem minmax(0, 1fr) 0.85rem;
+      gap: 0.55rem;
+    }
+
+    .archive-entries--blog time {
+      gap: 0.25rem;
+    }
+
+    .archive-entries--blog time span {
+      font-size: 1.12rem;
+    }
+
+    .archive-entries--tech a {
+      grid-template-columns: 2rem minmax(0, 1fr) 0.85rem;
+      gap: 0.55rem;
+    }
+
+    .archive-entries--tech .archive-entry-index {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .archive-entries--tech .archive-entry-copy {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .archive-entries--tech time {
+      grid-column: 2;
+      grid-row: 2;
+      justify-self: start;
+      padding-top: 0.2rem;
+    }
+
+    .archive-entries--tech a i {
+      grid-column: 3;
+      grid-row: 1 / span 2;
+    }
+
+    .gallery-header {
+      margin-bottom: 4.2rem;
+    }
+
+    .gallery-journal {
+      gap: 4.8rem;
+    }
+
+    .gallery-entry figcaption {
+      padding-top: 0.85rem;
+    }
+
+    .gallery-entry figcaption > strong {
+      font-size: 1.42rem;
+    }
+
+    .gallery-entry figcaption p {
+      font-size: 0.92rem;
     }
 
     .site-header {
-      margin-bottom: 2.2rem;
+      margin-bottom: 2.9rem;
     }
 
-    nav {
-      gap: 0.25rem 1.05rem;
+    .site-title {
+      gap: 0.5rem;
+    }
+
+    .site-title h2 {
+      font-size: 1.22rem;
+    }
+
+    .site-mark {
+      font-size: 0.68rem;
+    }
+
+    a.nav-link {
+      font-size: 0.68rem;
+      letter-spacing: 0.055em;
+    }
+
+    .home-hero {
+      gap: 2.5rem;
+      padding-bottom: 4.8rem;
+    }
+
+    .home-eyebrow {
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+      font-size: 0.66rem;
+    }
+
+    .home-eyebrow::before {
+      width: 1.8rem;
+      margin-top: 0.48rem;
+    }
+
+    .home-title {
+      margin-bottom: 1.5rem;
+      font-size: clamp(3rem, 15vw, 3.65rem);
+    }
+
+    .home-lede {
+      font-size: 1rem;
+    }
+
+    .home-actions {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .home-portrait::before {
+      inset: 8px -8px -8px 8px;
+    }
+
+    .home-portrait figcaption {
+      padding-left: 2rem;
+      text-align: left;
+    }
+
+    .home-story,
+    .home-index {
+      gap: 1.8rem;
+      padding: 3rem 0;
+    }
+
+    .home-story-body {
+      font-size: 1.02rem;
+      line-height: 1.82;
+    }
+
+    .home-story-body > p:first-child::first-letter {
+      font-size: 3.8em;
+    }
+
+    .home-wechat {
+      grid-template-columns: minmax(0, 1fr) 108px;
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+
+    .home-wechat-button {
+      width: 108px;
+    }
+
+    .home-index-links {
+      gap: 1.4rem;
+    }
+
+    .home-index-links a {
+      min-height: 8.25rem;
+      padding-right: 1.5rem;
+    }
+
+    .home-index-links strong {
+      max-width: 20rem;
+      margin-top: 1.1rem;
+    }
+
+    .home-updated {
+      margin-top: 2.5rem;
+      text-align: left;
+    }
+
+    footer {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .footer-note {
+      text-align: left;
     }
 
     ul.blog-posts li {
@@ -892,15 +2002,34 @@ Software engineer of the storage engine of a cloud-native distributed database s
     }
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      transition-delay: 0ms !important;
+    }
+
+    .gallery-image-button:hover img,
+    .home-actions a:hover span,
+    .home-index-links a:hover i {
+      transform: none;
+    }
+  }
+
 </style>
 
 </head>
 
-<body>
-  <header class="site-header"><a href="/" class="title site-title">
+<body class="kind-page type-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="site-header"><a href="/" class="title site-title">
+  <span class="site-mark" aria-hidden="true">✦</span>
   <h2>Sylvan&#39;s Abracadabra</h2>
 </a>
-<nav>
+<nav aria-label="Primary navigation">
 
 
 <a href="/gallery/" class="nav-link">Gallery</a>
@@ -920,25 +2049,11 @@ Software engineer of the storage engine of a cloud-native distributed database s
 
 </nav>
 </header>
-  <main>
-<article class="page">
+    <main id="main-content">
+<article class="page page--resume">
   
   <content class="content-body">
     
-    
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#education">Education</a></li>
-    <li><a href="#experience">Experience</a>
-      <ul>
-        <li><a href="#alibaba">Alibaba</a></li>
-        <li><a href="#huawei-2012-lab">Huawei, 2012 Lab</a></li>
-        <li><a href="#personal-studies">Personal Studies</a></li>
-      </ul>
-    </li>
-    <li><a href="#skills-and-hobbies">Skills and Hobbies</a></li>
-  </ul>
-</nav>
     
     <h1 id="xingyu-yi">Xingyu Yi</h1>
 <ul>
@@ -960,17 +2075,24 @@ Software engineer of the storage engine of a cloud-native distributed database s
 <p><em>2023/10 - present</em></p>
 <p>Software engineer of Alibaba’s search engine</p>
 <ul>
+<li><strong>Recently</strong>, LLM KV Cache storage management</li>
 <li>C++</li>
-<li>Search Engine</li>
-<li>Distributed System</li>
+<li>Search Engine, Indexing</li>
+<li>Lambda architecture</li>
 </ul>
 <h3 id="huawei-2012-lab">Huawei, 2012 Lab</h3>
 <p><em>2020/04 - 2023/09</em></p>
 <p>Software engineer of the storage engine of a cloud-native distributed database system</p>
 <ul>
 <li>C/C++</li>
-<li>Cutting-edge hardware: RDMA</li>
-<li>PostgreSQL based</li>
+<li>One-sided RDMA based allocation of transaction ID</li>
+<li>Distributed buffer management, multi-writer</li>
+</ul>
+<h3 id="gap-year">Gap Year</h3>
+<p><em>2019/07 - 2020/03</em></p>
+<ul>
+<li>Returned back to China and sought for jobs</li>
+<li>Delayed due to Covid-19</li>
 </ul>
 <h3 id="personal-studies">Personal Studies</h3>
 <p>Been learning some interesting courses from those top-tier universities.</p>
@@ -990,13 +2112,14 @@ Software engineer of the storage engine of a cloud-native distributed database s
   </content>
 </article>
 
-    <p class="page-edited">Last edited Jun 16, 2026</p>
-  </main>
-  <footer class="site-footer">Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
-<br>
-©2026 Sylvan Xingyu Y. <i>All rights reserved.</i>
-
+      
+      <p class="page-edited">Last edited Jul 14, 2026</p>
+      
+    </main>
+    <footer class="site-footer"><p class="footer-copyright">©2026 Sylvan Xingyu Y.</p>
+<p class="footer-note">Written in Beijing · Published quietly with Hugo</p>
 </footer>
+  </div>
 
   
 </body>
